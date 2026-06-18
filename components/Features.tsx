@@ -35,10 +35,17 @@ export default function Features() {
   return (
     <section
       id="om-oss"
-      className="py-24 px-4 relative overflow-hidden gym-grid-bg"
-      style={{ backgroundColor: '#0a0e18' }}
+      className="py-24 px-4 relative overflow-hidden"
+      style={{ backgroundColor: '#07090f' }}
     >
-      {/* Background decoration */}
+      {/* Gym section background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
+        style={{ backgroundImage: "url('/gym-section-bg.svg')" }}
+      />
+      <div className="absolute inset-0 bg-[#07090f]/50" />
+
+      {/* Section dividers */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />

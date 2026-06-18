@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Base dark gradient -->
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#04060d"/>
+      <stop offset="60%" stop-color="#060a14"/>
+      <stop offset="100%" stop-color="#0a1020"/>
+    </linearGradient>
+
+    <!-- Overhead spotlight left -->
+    <radialGradient id="spot1" cx="22%" cy="0%" r="55%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#1e40af" stop-opacity="0.22"/>
+      <stop offset="50%" stop-color="#1e3a8a" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Overhead spotlight center -->
+    <radialGradient id="spot2" cx="50%" cy="0%" r="60%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.16"/>
+      <stop offset="40%" stop-color="#1d4ed8" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Overhead spotlight right -->
+    <radialGradient id="spot3" cx="78%" cy="0%" r="50%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#1e40af" stop-opacity="0.18"/>
+      <stop offset="50%" stop-color="#1e3a8a" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Floor glow -->
+    <linearGradient id="floorGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0"/>
+      <stop offset="80%" stop-color="#1d4ed8" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.06"/>
+    </linearGradient>
+
+    <!-- Edge vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000000" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.75"/>
+    </radialGradient>
+
+    <!-- Noise texture filter -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" mode="overlay" result="noisy"/>
+      <feComposite in="noisy" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1920" height="1080" fill="url(#base)"/>
+
+  <!-- ===== GYM EQUIPMENT SILHOUETTES ===== -->
+  <!-- Far left: power rack -->
+  <g opacity="0.055" fill="#2563eb">
+    <rect x="60" y="120" width="18" height="780" rx="4"/>
+    <rect x="195" y="120" width="18" height="780" rx="4"/>
+    <rect x="55" y="118" width="163" height="20" rx="4"/>
+    <rect x="55" y="400" width="163" height="14" rx="3"/>
+    <rect x="55" y="520" width="163" height="14" rx="3"/>
+    <!-- Barbell on rack -->
+    <rect x="0" y="393" width="55" height="10" rx="5"/>
+    <rect x="218" y="393" width="90" height="10" rx="5"/>
+    <rect x="0" y="378" width="32" height="38" rx="5"/>
+    <rect x="285" y="378" width="32" height="38" rx="5"/>
+  </g>
+
+  <!-- Center background: cable machine -->
+  <g opacity="0.04" fill="#3b82f6">
+    <rect x="880" y="80" width="160" height="700" rx="6"/>
+    <rect x="860" y="80" width="200" height="22" rx="5"/>
+    <rect x="920" y="80" width="80" height="700" rx="4"/>
+    <circle cx="960" cy="200" r="55"/>
+    <circle cx="960" cy="200" r="40" fill="#060a14" opacity="0.9"/>
+    <circle cx="960" cy="600" r="55"/>
+    <circle cx="960" cy="600" r="40" fill="#060a14" opacity="0.9"/>
+  </g>
+
+  <!-- Far right: another rack -->
+  <g opacity="0.05" fill="#2563eb">
+    <rect x="1647" y="150" width="18" height="730" rx="4"/>
+    <rect x="1782" y="150" width="18" height="730" rx="4"/>
+    <rect x="1642" y="148" width="163" height="20" rx="4"/>
+    <rect x="1642" y="430" width="163" height="14" rx="3"/>
+    <rect x="1642" y="540" width="163" height="14" rx="3"/>
+    <rect x="1800" y="423" width="120" height="10" rx="5"/>
+    <rect x="1800" y="408" width="32" height="38" rx="5"/>
+  </g>
+
+  <!-- ===== PERSPECTIVE FLOOR LINES ===== -->
+  <!-- Vanishing point at ~960, 680 -->
+  <g opacity="0.07" stroke="#3b82f6" fill="none">
+    <!-- Horizontal floor lines (parallel) -->
+    <line x1="0" y1="700" x2="1920" y2="700" stroke-width="1.2"/>
+    <line x1="0" y1="740" x2="1920" y2="740" stroke-width="0.9"/>
+    <line x1="0" y1="790" x2="1920" y2="790" stroke-width="0.7"/>
+    <line x1="0" y1="860" x2="1920" y2="860" stroke-width="0.5"/>
+    <line x1="0" y1="950" x2="1920" y2="950" stroke-width="0.4"/>
+    <line x1="0" y1="1040" x2="1920" y2="1040" stroke-width="0.3"/>
+
+    <!-- Perspective converging lines from floor to vanishing point -->
+    <line x1="0" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="240" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="480" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="720" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="960" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="1200" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="1440" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="1680" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+    <line x1="1920" y1="1080" x2="960" y2="680" stroke-width="0.6"/>
+  </g>
+
+  <!-- ===== WALL / CEILING LINE ===== -->
+  <line x1="0" y1="95" x2="1920" y2="95" stroke="#1e3a8a" stroke-width="1.5" opacity="0.15"/>
+
+  <!-- Ceiling spotlights (circles) -->
+  <g opacity="0.25">
+    <circle cx="320" cy="95" r="8" fill="#3b82f6"/>
+    <circle cx="320" cy="95" r="14" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="640" cy="95" r="8" fill="#3b82f6"/>
+    <circle cx="640" cy="95" r="14" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="960" cy="95" r="8" fill="#3b82f6"/>
+    <circle cx="960" cy="95" r="14" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="1280" cy="95" r="8" fill="#3b82f6"/>
+    <circle cx="1280" cy="95" r="14" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+    <circle cx="1600" cy="95" r="8" fill="#3b82f6"/>
+    <circle cx="1600" cy="95" r="14" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+  </g>
+
+  <!-- Light cone lines from spotlights -->
+  <g opacity="0.04" stroke="#3b82f6" fill="none">
+    <line x1="320" y1="95" x2="120" y2="1080" stroke-width="1"/>
+    <line x1="320" y1="95" x2="520" y2="1080" stroke-width="1"/>
+    <line x1="960" y1="95" x2="660" y2="1080" stroke-width="1"/>
+    <line x1="960" y1="95" x2="1260" y2="1080" stroke-width="1"/>
+    <line x1="1600" y1="95" x2="1380" y2="1080" stroke-width="1"/>
+    <line x1="1600" y1="95" x2="1800" y2="1080" stroke-width="1"/>
+  </g>
+
+  <!-- ===== LIGHT OVERLAYS ===== -->
+  <rect width="1920" height="1080" fill="url(#spot1)"/>
+  <rect width="1920" height="1080" fill="url(#spot2)"/>
+  <rect width="1920" height="1080" fill="url(#spot3)"/>
+  <rect width="1920" height="1080" fill="url(#floorGlow)"/>
+
+  <!-- Vignette -->
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+
+  <!-- Subtle noise overlay -->
+  <rect width="1920" height="1080" fill="#1d4ed8" opacity="0.015" filter="url(#noise)"/>
+</svg>

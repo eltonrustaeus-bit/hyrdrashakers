@@ -6,22 +6,16 @@ export default function Hero() {
   return (
     <section
       id="hem"
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{
-        background: 'linear-gradient(160deg, #070a10 0%, #0a1222 100%)',
-      }}
+      className="relative min-h-screen flex items-center overflow-hidden bg-[#04060d]"
     >
-      {/* Gym grid background */}
+      {/* Gym background image */}
       <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(30,64,175,0.07) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(30,64,175,0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px',
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/gym-hero-bg.svg')" }}
       />
+
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-[#04060d]/60" />
 
       {/* Blue radial glow */}
       <div
@@ -29,11 +23,6 @@ export default function Hero() {
         style={{
           background: 'radial-gradient(ellipse 60% 50% at 65% 40%, rgba(29,78,216,0.18) 0%, transparent 70%)',
         }}
-      />
-
-      {/* Diagonal energy stripes */}
-      <div
-        className="absolute inset-0 pointer-events-none gym-stripe"
       />
 
       {/* Animated orb */}

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#070a12"/>
+      <stop offset="100%" stop-color="#0a0e18"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#1e40af" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#1e40af" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vignette2" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1920" height="600" fill="url(#base2)"/>
+
+  <!-- Subtle horizontal lines suggesting a gym wall/mirror -->
+  <g opacity="0.045" stroke="#3b82f6" fill="none">
+    <line x1="0" y1="100" x2="1920" y2="100" stroke-width="1"/>
+    <line x1="0" y1="200" x2="1920" y2="200" stroke-width="0.7"/>
+    <line x1="0" y1="300" x2="1920" y2="300" stroke-width="0.5"/>
+    <line x1="0" y1="400" x2="1920" y2="400" stroke-width="0.5"/>
+    <line x1="0" y1="500" x2="1920" y2="500" stroke-width="0.7"/>
+    <!-- Vertical dividers (like mirrors in gym) -->
+    <line x1="480" y1="0" x2="480" y2="600" stroke-width="0.5"/>
+    <line x1="960" y1="0" x2="960" y2="600" stroke-width="0.5"/>
+    <line x1="1440" y1="0" x2="1440" y2="600" stroke-width="0.5"/>
+  </g>
+
+  <!-- Dumbbell rack silhouette at bottom -->
+  <g opacity="0.05" fill="#3b82f6">
+    <!-- Rack bar -->
+    <rect x="200" y="480" width="1520" height="12" rx="4"/>
+    <!-- Dumbbell pairs -->
+    <g>
+      <rect x="240" y="430" width="16" height="55" rx="3"/>
+      <rect x="230" y="428" width="36" height="16" rx="3"/>
+      <rect x="230" y="468" width="36" height="16" rx="3"/>
+    </g>
+    <g>
+      <rect x="330" y="425" width="18" height="60" rx="3"/>
+      <rect x="318" y="423" width="42" height="18" rx="3"/>
+      <rect x="318" y="464" width="42" height="18" rx="3"/>
+    </g>
+    <g>
+      <rect x="430" y="420" width="20" height="65" rx="3"/>
+      <rect x="416" y="418" width="48" height="20" rx="3"/>
+      <rect x="416" y="460" width="48" height="20" rx="3"/>
+    </g>
+    <g>
+      <rect x="540" y="415" width="22" height="70" rx="3"/>
+      <rect x="524" y="413" width="54" height="22" rx="3"/>
+      <rect x="524" y="456" width="54" height="22" rx="3"/>
+    </g>
+    <!-- Mirror images right side -->
+    <g>
+      <rect x="1360" y="430" width="16" height="55" rx="3"/>
+      <rect x="1350" y="428" width="36" height="16" rx="3"/>
+      <rect x="1350" y="468" width="36" height="16" rx="3"/>
+    </g>
+    <g>
+      <rect x="1260" y="425" width="18" height="60" rx="3"/>
+      <rect x="1248" y="423" width="42" height="18" rx="3"/>
+      <rect x="1248" y="464" width="42" height="18" rx="3"/>
+    </g>
+    <g>
+      <rect x="1155" y="420" width="20" height="65" rx="3"/>
+      <rect x="1141" y="418" width="48" height="20" rx="3"/>
+      <rect x="1141" y="460" width="48" height="20" rx="3"/>
+    </g>
+  </g>
+
+  <!-- Ceiling spotlight row -->
+  <line x1="0" y1="5" x2="1920" y2="5" stroke="#1e3a8a" stroke-width="3" opacity="0.2"/>
+  <g opacity="0.2">
+    <circle cx="240" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="480" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="720" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="960" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="1200" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="1440" cy="5" r="5" fill="#3b82f6"/>
+    <circle cx="1680" cy="5" r="5" fill="#3b82f6"/>
+  </g>
+
+  <rect width="1920" height="600" fill="url(#glow2)"/>
+  <rect width="1920" height="600" fill="url(#vignette2)"/>
+</svg>
