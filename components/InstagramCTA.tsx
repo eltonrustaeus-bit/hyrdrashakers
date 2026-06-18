@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Instagram, ExternalLink } from 'lucide-react'
 
 export default function InstagramCTA() {
@@ -49,11 +48,10 @@ export default function InstagramCTA() {
           <div className="relative w-28 h-28 animate-float">
             <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse" />
             <div className="relative rounded-full overflow-hidden ring-4 ring-blue-500/30 shadow-2xl shadow-blue-900/50 w-full h-full">
-              <Image
-                src="/logo.png"
+              <img
+                src="/logo.svg"
                 alt="Hydra Shakers"
-                fill
-                className="object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>

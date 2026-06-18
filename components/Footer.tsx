@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Instagram } from 'lucide-react'
 
 export default function Footer() {
@@ -8,12 +7,11 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Logo + Brand */}
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden ring-1 ring-blue-500/30">
-              <Image
-                src="/logo.png"
+            <div className="w-8 h-8 rounded-full overflow-hidden ring-1 ring-blue-500/30 flex-shrink-0">
+              <img
+                src="/logo.svg"
                 alt="Hydra Shakers"
-                fill
-                className="object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
             <span className="text-white font-semibold text-sm">
@@ -23,7 +21,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-gray-500 text-sm text-center">
-            © 2025 Hydra Shakers. Alla rättigheter förbehållna.
+            © 2026 Hydra Shakers. Alla rättigheter förbehållna.
           </p>
 
           {/* Instagram link */}

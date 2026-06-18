@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { ArrowRight, Instagram } from 'lucide-react'
 
 export default function Hero() {
@@ -117,12 +116,10 @@ export default function Hero() {
 
               {/* Logo image */}
               <div className="absolute inset-8 rounded-full overflow-hidden ring-4 ring-blue-500/30 shadow-2xl shadow-blue-900/50">
-                <Image
-                  src="/logo.png"
+                <img
+                  src="/logo.svg"
                   alt="Hydra Shakers"
-                  fill
-                  className="object-cover"
-                  priority
+                  className="w-full h-full object-contain"
                 />
               </div>
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 
 export default function Navbar() {
@@ -35,13 +34,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#hem" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition-all duration-300">
-              <Image
-                src="/logo.png"
+            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition-all duration-300 flex-shrink-0">
+              <img
+                src="/logo.svg"
                 alt="Hydra Shakers Logo"
-                fill
-                className="object-cover"
-                priority
+                className="w-full h-full object-contain"
               />
             </div>
             <span className="font-bold text-white text-lg tracking-tight group-hover:text-blue-300 transition-colors duration-300">

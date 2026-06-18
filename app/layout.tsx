@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: 'Hydra Shakers – Din personliga vattenflaska',
   description: 'Trött på din tråkiga vattenflaska? Vi hjälper dig skapa en personlig flaska som speglar vem du är. Premium kvalitet med snabb leverans.',
   keywords: ['vattenflaska', 'personlig', 'custom', 'Sverige', 'hydra shakers'],
+  icons: {
+    icon: '/logo.svg',
+    apple: '/logo.svg',
+  },
   openGraph: {
     title: 'Hydra Shakers – Din personliga vattenflaska',
     description: 'Skapa din unika vattenflaska med Hydra Shakers.',
