@@ -4,8 +4,8 @@ const steps = [
   {
     number: '01',
     icon: Pencil,
-    title: 'Välj din design',
-    description: 'Berätta för oss hur du vill ha din flaska. Välj färger, text och personlig touch som speglar dig.',
+    title: 'Välj din gymstil',
+    description: 'Berätta hur du vill ha din flaska. Färger, text, din gym-identitet.',
   },
   {
     number: '02',
@@ -16,8 +16,8 @@ const steps = [
   {
     number: '03',
     icon: PackageCheck,
-    title: 'Leverans hem till dig',
-    description: 'Få din personliga flaska direkt i brevlådan. Snabbt, säkert och klimatsmart förpackat.',
+    title: 'Redo för nästa pass',
+    description: 'Din personliga flaska levereras hem. Redo att hysa i gymmet.',
   },
 ]
 

@@ -117,3 +117,22 @@ body {
 .animate-delay-300 { animation-delay: 0.3s; }
 .animate-delay-400 { animation-delay: 0.4s; }
 .animate-delay-500 { animation-delay: 0.5s; }
+
+/* Gym background pattern utility */
+.gym-grid-bg {
+  background-image:
+    linear-gradient(rgba(30,64,175,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,64,175,0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Diagonal energy stripe */
+.gym-stripe {
+  background-image: repeating-linear-gradient(
+    -60deg,
+    transparent,
+    transparent 120px,
+    rgba(30,64,175,0.04) 120px,
+    rgba(30,64,175,0.04) 121px
+  );
+}

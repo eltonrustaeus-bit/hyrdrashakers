@@ -23,6 +23,13 @@ export default function InstagramCTA() {
           <Instagram size={28} className="text-white relative z-10" strokeWidth={1.5} />
         </div>
 
+        {/* Gym vibes label */}
+        <div className="mb-3">
+          <span className="text-gray-400 text-sm font-semibold uppercase tracking-widest">
+            Se våra kunder i action
+          </span>
+        </div>
+
         {/* Handle */}
         <div className="mb-4">
           <span className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight">
@@ -49,7 +56,7 @@ export default function InstagramCTA() {
             <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-xl animate-pulse" />
             <div className="relative rounded-full overflow-hidden ring-4 ring-blue-500/30 shadow-2xl shadow-blue-900/50 w-full h-full">
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Hydra Shakers"
                 className="w-full h-full object-contain"
               />

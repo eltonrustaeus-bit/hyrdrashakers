@@ -15,6 +15,7 @@ const config: Config = {
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        bebas: ['var(--font-bebas)', 'Impact', 'sans-serif'],
       },
     },
   },

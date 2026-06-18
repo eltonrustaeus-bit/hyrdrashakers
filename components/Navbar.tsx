@@ -36,7 +36,7 @@ export default function Navbar() {
           <a href="#hem" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition-all duration-300 flex-shrink-0">
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Hydra Shakers Logo"
                 className="w-full h-full object-contain"
               />

@@ -1,32 +1,43 @@
-import { Palette, Shield, Truck } from 'lucide-react'
+import { Droplets, Lock, Thermometer, Palette } from 'lucide-react'
 
 const features = [
   {
-    icon: Palette,
-    title: '100% Personlig',
-    description: 'Välj din egen design, färg och text. Ingen flaska är den andra lik. Din flaska — din identitet.',
+    icon: Droplets,
+    title: 'BPA-fri & Säker',
+    description: '100% fri från skadliga ämnen. Säker för daglig träning och certifierat hälsosam.',
     gradient: 'from-blue-600 to-blue-400',
     glow: 'shadow-blue-500/20',
   },
   {
-    icon: Shield,
-    title: 'Premium Kvalitet',
-    description: 'Tillverkad av hållbart material som håller länge och ser bra ut. Vi kompromissar inte med kvaliteten.',
+    icon: Lock,
+    title: 'Läcksäker Design',
+    description: 'Kasta den i gymväskan utan att tänka en sekund. Tål smällar, stötar och svettig träning.',
     gradient: 'from-indigo-600 to-blue-500',
     glow: 'shadow-indigo-500/20',
   },
   {
-    icon: Truck,
-    title: 'Snabb Leverans',
-    description: 'Vi levererar din personliga flaska direkt hem till dig. Enkelt, smidigt och pålitligt.',
-    gradient: 'from-blue-500 to-cyan-400',
+    icon: Thermometer,
+    title: 'Håller Kall i Timmar',
+    description: 'Iskallt vatten under hela passet — oavsett om det är 45 minuter eller 3 timmar.',
+    gradient: 'from-blue-500 to-cyan-500',
     glow: 'shadow-cyan-500/20',
+  },
+  {
+    icon: Palette,
+    title: '100% Personlig',
+    description: 'Ingen flaska är den andra lik. Välj din design och visa din gymstil.',
+    gradient: 'from-blue-700 to-blue-500',
+    glow: 'shadow-blue-600/20',
   },
 ]
 
 export default function Features() {
   return (
-    <section id="om-oss" className="py-24 px-4 bg-[#0f172a] relative overflow-hidden">
+    <section
+      id="om-oss"
+      className="py-24 px-4 relative overflow-hidden gym-grid-bg"
+      style={{ backgroundColor: '#0a0e18' }}
+    >
       {/* Background decoration */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
@@ -50,18 +61,18 @@ export default function Features() {
             </span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Vi kombinerar kreativitet och kvalitet för att ge dig den bästa upplevelsen.
+            Byggd för gymmet. Designad för dig. Vi kombinerar prestanda och stil utan kompromiss.
           </p>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* Feature Cards — 2x2 on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
               <div
                 key={feature.title}
-                className={`group relative bg-[#111827] border border-white/10 hover:border-blue-500/50 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1`}
+                className="group relative bg-[#0d1220] border border-white/10 hover:border-blue-500/50 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Top gradient line */}
