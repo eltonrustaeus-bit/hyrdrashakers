@@ -38,12 +38,15 @@ export default function Features() {
       className="py-24 px-4 relative overflow-hidden"
       style={{ backgroundColor: '#07090f' }}
     >
-      {/* Gym section background image */}
+      {/* Gym background photo — workout/training scene */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80"
-        style={{ backgroundImage: "url('/gym-section-bg.svg')" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1920&q=80'), url('/gym-section-bg.svg')",
+        }}
       />
-      <div className="absolute inset-0 bg-[#07090f]/50" />
+      <div className="absolute inset-0 bg-[#07090f]/80" />
 
       {/* Section dividers */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />

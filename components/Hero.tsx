@@ -8,14 +8,17 @@ export default function Hero() {
       id="hem"
       className="relative min-h-screen flex items-center overflow-hidden bg-[#04060d]"
     >
-      {/* Gym background image */}
+      {/* Gym background photo — real gym interior with equipment */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/gym-hero-bg.svg')" }}
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80'), url('/gym-hero-bg.svg')",
+        }}
       />
 
-      {/* Dark overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-[#04060d]/60" />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-[#04060d]/70" />
 
       {/* Blue radial glow */}
       <div
