@@ -24,20 +24,16 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section id="hur-det-fungerar" className="py-24 px-4 relative overflow-hidden bg-[#060a10]">
-      {/* Gym background photo — barbell / strength training */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80'), url('/gym-hero-bg.svg')",
-        }}
+        style={{ backgroundImage: "url('/hydra-bg.svg')" }}
       />
-      <div className="absolute inset-0 bg-[#060a10]/78" />
+      <div className="absolute inset-0 bg-[#060a10]/55" />
       {/* Section divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-600/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-56 h-56 bg-blue-400/5 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-56 h-56 bg-blue-400/10 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

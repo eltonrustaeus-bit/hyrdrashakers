@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Base dark navy gradient matching logo palette -->
+    <radialGradient id="base" cx="50%" cy="50%" r="75%">
+      <stop offset="0%"   stop-color="#0b1830"/>
+      <stop offset="100%" stop-color="#04060d"/>
+    </radialGradient>
+    <!-- Logo-blue glow: left -->
+    <radialGradient id="g1" cx="18%" cy="65%" r="42%">
+      <stop offset="0%"   stop-color="#1e3a8a" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#04060d" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Logo-blue glow: right -->
+    <radialGradient id="g2" cx="82%" cy="35%" r="38%">
+      <stop offset="0%"   stop-color="#1e3a8a" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#04060d" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Lighter blue glow: center bottom -->
+    <radialGradient id="g3" cx="50%" cy="105%" r="55%">
+      <stop offset="0%"   stop-color="#3b82f6" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#04060d" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Top center subtle glow -->
+    <radialGradient id="g4" cx="50%" cy="-5%" r="45%">
+      <stop offset="0%"   stop-color="#1e3a8a" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#04060d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark navy base -->
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <!-- Glow layers in brand color -->
+  <rect width="1920" height="1080" fill="url(#g1)"/>
+  <rect width="1920" height="1080" fill="url(#g2)"/>
+  <rect width="1920" height="1080" fill="url(#g3)"/>
+  <rect width="1920" height="1080" fill="url(#g4)"/>
+
+  <!-- === Serpentine wave lines — Hydra water theme === -->
+  <!-- Wave A — upper sweep -->
+  <path d="M-80,280 C220,210 440,360 760,275 C1080,190 1300,340 1620,255 C1800,200 1920,250 2020,230"
+    stroke="#3b82f6" stroke-width="1.2" fill="none" stroke-opacity="0.09"/>
+
+  <!-- Wave B — upper-mid -->
+  <path d="M-80,420 C260,340 480,500 820,400 C1140,305 1360,460 1680,370 C1860,310 1950,370 2020,350"
+    stroke="#1e3a8a" stroke-width="1.8" fill="none" stroke-opacity="0.14"/>
+
+  <!-- Wave C — mid (bold, logo blue) -->
+  <path d="M-80,560 C300,470 540,630 900,530 C1200,445 1460,600 1760,500 C1900,450 1960,510 2020,490"
+    stroke="#1e3a8a" stroke-width="2.2" fill="none" stroke-opacity="0.18"/>
+
+  <!-- Wave D — lower-mid -->
+  <path d="M-80,700 C240,620 460,760 800,670 C1120,580 1340,720 1660,635 C1840,580 1940,640 2020,620"
+    stroke="#1e3a8a" stroke-width="1.5" fill="none" stroke-opacity="0.12"/>
+
+  <!-- Wave E — bottom sweep -->
+  <path d="M-80,840 C280,760 500,900 840,810 C1160,720 1380,860 1700,775 C1880,720 1960,780 2020,760"
+    stroke="#3b82f6" stroke-width="1" fill="none" stroke-opacity="0.08"/>
+
+  <!-- Serpentine accent — thicker, upper (hydra neck silhouette feeling) -->
+  <path d="M-80,180 C180,140 220,240 480,195 C740,150 780,250 1040,205 C1300,160 1340,260 1600,215 C1800,180 1900,220 2020,200"
+    stroke="#60a5fa" stroke-width="0.8" fill="none" stroke-opacity="0.07"/>
+
+  <!-- === Scattered glow particles === -->
+  <!-- Top band -->
+  <circle cx="145"  cy="130" r="1.8" fill="#60a5fa" fill-opacity="0.18"/>
+  <circle cx="480"  cy="75"  r="1.2" fill="#93c5fd" fill-opacity="0.13"/>
+  <circle cx="820"  cy="155" r="2.0" fill="#3b82f6" fill-opacity="0.12"/>
+  <circle cx="1160" cy="90"  r="1.5" fill="#60a5fa" fill-opacity="0.15"/>
+  <circle cx="1440" cy="170" r="1.2" fill="#93c5fd" fill-opacity="0.11"/>
+  <circle cx="1750" cy="105" r="2.0" fill="#3b82f6" fill-opacity="0.13"/>
+
+  <!-- Mid band -->
+  <circle cx="95"   cy="520" r="1.5" fill="#3b82f6" fill-opacity="0.09"/>
+  <circle cx="390"  cy="480" r="1.0" fill="#60a5fa" fill-opacity="0.10"/>
+  <circle cx="720"  cy="555" r="1.8" fill="#1e3a8a" fill-opacity="0.20"/>
+  <circle cx="1050" cy="495" r="1.2" fill="#3b82f6" fill-opacity="0.11"/>
+  <circle cx="1380" cy="540" r="1.5" fill="#60a5fa" fill-opacity="0.09"/>
+  <circle cx="1680" cy="505" r="1.0" fill="#93c5fd" fill-opacity="0.10"/>
+  <circle cx="1880" cy="545" r="1.8" fill="#3b82f6" fill-opacity="0.09"/>
+
+  <!-- Bottom band -->
+  <circle cx="200"  cy="950" r="1.5" fill="#3b82f6" fill-opacity="0.12"/>
+  <circle cx="580"  cy="990" r="1.2" fill="#60a5fa" fill-opacity="0.10"/>
+  <circle cx="960"  cy="960" r="2.0" fill="#3b82f6" fill-opacity="0.12"/>
+  <circle cx="1320" cy="985" r="1.5" fill="#60a5fa" fill-opacity="0.10"/>
+  <circle cx="1700" cy="945" r="1.2" fill="#93c5fd" fill-opacity="0.11"/>
+
+  <!-- === Subtle hexagonal scale hints (barely visible, bottom-right) === -->
+  <path d="M1680,720 L1700,707 L1720,720 L1720,746 L1700,759 L1680,746 Z"
+    stroke="#1e3a8a" stroke-width="0.6" fill="none" stroke-opacity="0.08"/>
+  <path d="M1720,720 L1740,707 L1760,720 L1760,746 L1740,759 L1720,746 Z"
+    stroke="#1e3a8a" stroke-width="0.6" fill="none" stroke-opacity="0.08"/>
+  <path d="M1700,759 L1720,746 L1740,759 L1740,785 L1720,798 L1700,785 Z"
+    stroke="#1e3a8a" stroke-width="0.6" fill="none" stroke-opacity="0.06"/>
+  <path d="M1660,759 L1680,746 L1700,759 L1700,785 L1680,798 L1660,785 Z"
+    stroke="#1e3a8a" stroke-width="0.6" fill="none" stroke-opacity="0.06"/>
+  <path d="M1740,759 L1760,746 L1780,759 L1780,785 L1760,798 L1740,785 Z"
+    stroke="#1e3a8a" stroke-width="0.6" fill="none" stroke-opacity="0.06"/>
+</svg>
