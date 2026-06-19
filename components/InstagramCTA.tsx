@@ -26,7 +26,7 @@ export default function InstagramCTA() {
         {/* Gym vibes label */}
         <div className="mb-3">
           <span className="text-gray-400 text-sm font-semibold uppercase tracking-widest">
-            Se våra kunder i action
+            Följ oss på Instagram
           </span>
         </div>
 
@@ -47,7 +47,7 @@ export default function InstagramCTA() {
 
         {/* Subtitle */}
         <p className="text-gray-300 text-lg sm:text-xl mb-8 max-w-xl mx-auto">
-          Följ oss för inspiration och senaste nytt. Se hur andra skapar sina unika flaskor!
+          Följ oss för inspiration och senaste nytt om Hydra Shakers.
         </p>
 
         {/* Logo */}

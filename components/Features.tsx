@@ -4,7 +4,7 @@ const features = [
   {
     icon: Droplets,
     title: 'BPA-fri & Säker',
-    description: '100% fri från skadliga ämnen. Säker för daglig träning och certifierat hälsosam.',
+    description: '100% fri från skadliga ämnen. Säker för daglig träning och gjord för att hålla länge.',
     gradient: 'from-blue-600 to-blue-400',
     glow: 'shadow-blue-500/20',
   },
@@ -17,8 +17,8 @@ const features = [
   },
   {
     icon: Thermometer,
-    title: 'Håller Kall i Timmar',
-    description: 'Iskallt vatten under hela passet — oavsett om det är 45 minuter eller 3 timmar.',
+    title: '800 ml Kapacitet',
+    description: 'Rymmer mer än nog för ett helt träningspass. Stort nog att räcka, lätt nog att bära.',
     gradient: 'from-blue-500 to-cyan-500',
     glow: 'shadow-cyan-500/20',
   },

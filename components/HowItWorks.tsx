@@ -5,7 +5,7 @@ const steps = [
     number: '01',
     icon: Pencil,
     title: 'Välj din gymstil',
-    description: 'Berätta hur du vill ha din flaska. Färger, text, din gym-identitet.',
+    description: 'Berätta hur du vill ha din flaska. Välj variant, lägg till text eller bild — din gym-identitet.',
   },
   {
     number: '02',
