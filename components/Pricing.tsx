@@ -4,9 +4,30 @@ import { useState, useRef } from 'react'
 import { Check, Instagram, Type, Image as ImageIcon } from 'lucide-react'
 
 const VARIANTS = [
-  { name: 'Vit',   photo: '/shaker-white.jpg', textColor: '#1a3a7a', shadowColor: 'rgba(255,255,255,0.6)' },
-  { name: 'Klar',  photo: '/shaker-clear.jpg', textColor: '#1a3a7a', shadowColor: 'rgba(255,255,255,0.5)' },
-  { name: 'Svart', photo: '/shaker-black.jpg', textColor: '#93c5fd', shadowColor: 'rgba(0,0,0,0.8)'       },
+  {
+    name: 'Vit',
+    photo: '/shaker-white.jpg',
+    textColor: '#1a3a7a',
+    textStroke: '0.4px rgba(255,255,255,0.8)',
+    textShadow: '0 0 6px rgba(255,255,255,0.9), 0 1px 3px rgba(255,255,255,0.7)',
+    glowColor: 'rgba(147,197,253,0.18)',
+  },
+  {
+    name: 'Klar',
+    photo: '/shaker-clear.jpg',
+    textColor: '#1a3a7a',
+    textStroke: '0.4px rgba(200,220,255,0.6)',
+    textShadow: '0 0 8px rgba(255,255,255,0.8), 0 1px 3px rgba(200,220,255,0.6)',
+    glowColor: 'rgba(99,179,237,0.14)',
+  },
+  {
+    name: 'Svart',
+    photo: '/shaker-black.jpg',
+    textColor: '#93c5fd',
+    textStroke: '0.4px rgba(0,0,0,0.9)',
+    textShadow: '0 0 8px rgba(59,130,246,0.9), 0 0 16px rgba(59,130,246,0.5), 0 1px 3px rgba(0,0,0,0.9)',
+    glowColor: 'rgba(59,130,246,0.20)',
+  },
 ]
 
 export default function Pricing() {
@@ -80,32 +101,46 @@ export default function Pricing() {
                   ? 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)'
                   : 'transform 0.08s linear',
                 willChange: 'transform',
-                filter: 'drop-shadow(0 28px 48px rgba(0,0,0,0.65))',
+                filter: 'drop-shadow(0 32px 52px rgba(0,0,0,0.75)) drop-shadow(0 0 28px rgba(59,130,246,0.35))',
               }}
             >
+              {/* Ambient glow halo behind bottle */}
+              <div
+                className="absolute inset-0 pointer-events-none rounded-full blur-2xl scale-75"
+                style={{ background: `radial-gradient(ellipse 70% 80% at 50% 55%, ${variant.glowColor} 0%, transparent 70%)` }}
+              />
+
               {/* Real product photo */}
               <img
                 src={variant.photo}
                 alt={`Perfect Shaker Activ 800ml – ${variant.name}`}
-                className="w-full h-full object-contain select-none pointer-events-none"
+                className="w-full h-full object-contain select-none pointer-events-none relative z-10"
                 draggable={false}
               />
 
               {/* Live text overlay on label area */}
               {(labelText || hasImage) && (
                 <div
-                  className="absolute pointer-events-none flex flex-col items-center justify-center gap-0.5"
-                  style={{ top: '44%', bottom: '30%', left: '28%', right: '28%' }}
+                  className="absolute pointer-events-none flex flex-col items-center justify-center gap-1 z-20 rounded-lg"
+                  style={{
+                    top: '44%', bottom: '30%', left: '22%', right: '22%',
+                    background: variantIdx === 2
+                      ? 'rgba(0,0,0,0.25)'
+                      : 'rgba(255,255,255,0.15)',
+                    backdropFilter: 'blur(1px)',
+                  }}
                 >
                   {labelText && (
                     <span
-                      className="font-black text-center leading-tight tracking-wide block w-full"
+                      className="font-black text-center leading-tight tracking-wide block w-full px-1"
                       style={{
                         color: variant.textColor,
-                        fontSize: labelText.length > 14 ? '7px' : labelText.length > 9 ? '9px' : '11px',
-                        textShadow: `0 1px 4px ${variant.shadowColor}`,
+                        fontSize: labelText.length > 14 ? '8px' : labelText.length > 9 ? '10px' : '12px',
+                        textShadow: variant.textShadow,
+                        WebkitTextStroke: variant.textStroke,
                         wordBreak: 'break-word',
                         fontFamily: 'Arial Black, sans-serif',
+                        paintOrder: 'stroke fill',
                       }}
                     >
                       {labelText.toUpperCase()}
@@ -115,11 +150,13 @@ export default function Pricing() {
                     <span
                       className="block text-center"
                       style={{
-                        fontSize: '6px',
+                        fontSize: '7px',
                         color: variant.textColor,
-                        opacity: 0.55,
+                        opacity: 0.8,
+                        textShadow: variant.textShadow,
                         fontFamily: 'Arial, sans-serif',
-                        letterSpacing: '0.05em',
+                        letterSpacing: '0.08em',
+                        fontWeight: 'bold',
                       }}
                     >
                       {labelText ? '+ DIN BILD' : '[ DIN BILD ]'}
