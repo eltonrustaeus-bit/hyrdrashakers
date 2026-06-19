@@ -18,7 +18,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '#hem', label: 'Hem' },
     { href: '#om-oss', label: 'Om oss' },
-    { href: '#hur-det-fungerar', label: 'Hur det fungerar' },
+    { href: '#priser', label: 'Priser' },
     { href: '#kontakt', label: 'Kontakt' },
   ]
 
