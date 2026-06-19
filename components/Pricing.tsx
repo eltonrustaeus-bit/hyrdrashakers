@@ -3,138 +3,13 @@
 import { useState } from 'react'
 import { Check, Type, Image, Layers, Instagram } from 'lucide-react'
 
-// ─── SVG Shaker mockup ──────────────────────────────────────────────────────
-function ShakerMockup({
-  showText,
-  showImage,
-  customText,
-}: {
-  showText: boolean
-  showImage: boolean
-  customText?: string
-}) {
-  const label = customText?.slice(0, 18) || (showText && !showImage ? 'DIN TEXT' : '')
-
-  return (
-    <svg viewBox="0 0 110 270" className="w-full h-full drop-shadow-2xl" fill="none">
-      <defs>
-        {/* Body 3-D gradient */}
-        <linearGradient id="body" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#b8cce4" />
-          <stop offset="25%" stopColor="#e8f0fc" />
-          <stop offset="60%" stopColor="#dde8f8" />
-          <stop offset="100%" stopColor="#94aec8" />
-        </linearGradient>
-        {/* Cap gradient */}
-        <linearGradient id="cap" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#0f2a6e" />
-          <stop offset="50%" stopColor="#1d4ed8" />
-          <stop offset="100%" stopColor="#0f2a6e" />
-        </linearGradient>
-        {/* Label gradient */}
-        <linearGradient id="lbl" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#f0f4ff" />
-        </linearGradient>
-        {/* Shadow */}
-        <radialGradient id="shad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="rgba(0,0,0,0.35)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-        </radialGradient>
-      </defs>
-
-      {/* Drop shadow ellipse */}
-      <ellipse cx="55" cy="266" rx="36" ry="6" fill="url(#shad)" />
-
-      {/* Body: tapers from ~80px wide at bottom to ~58px at shoulder */}
-      <path
-        d="M26 75 Q24 75 23 80 L16 255 Q16 263 26 263 L84 263 Q94 263 94 255 L87 80 Q86 75 84 75 Z"
-        fill="url(#body)"
-      />
-
-      {/* Body left shine */}
-      <path d="M33 88 L26 250" stroke="rgba(255,255,255,0.55)" strokeWidth="4" strokeLinecap="round" />
-
-      {/* Cap ring (connects body to cap) */}
-      <rect x="26" y="62" width="58" height="15" rx="4" fill="#1e3a8a" />
-
-      {/* Cap body */}
-      <path d="M32 22 Q32 12 55 12 Q78 12 78 22 L76 62 L34 62 Z" fill="url(#cap)" />
-
-      {/* Spout nub */}
-      <rect x="45" y="8" width="20" height="14" rx="4" fill="#1e40af" />
-      <rect x="49" y="4" width="12" height="10" rx="3" fill="#2563eb" />
-
-      {/* ActionRod handle loop on the side */}
-      <path d="M87 140 Q102 140 102 152 Q102 164 87 164" stroke="#1e3a8a" strokeWidth="4" strokeLinecap="round" fill="none" />
-
-      {/* ── Label area ── */}
-      <rect x="28" y="95" width="54" height="105" rx="5" fill="url(#lbl)" />
-      <rect x="28" y="95" width="54" height="105" rx="5" stroke="rgba(30,64,175,0.18)" strokeWidth="1" />
-
-      {/* Label content */}
-      {showImage && !showText && (
-        // Placeholder image
-        <>
-          <rect x="34" y="104" width="42" height="42" rx="3" fill="#dbeafe" />
-          <path d="M41 138 L48 124 L55 132 L62 120 L69 138 Z" fill="#93c5fd" />
-          <circle cx="44" cy="115" r="4" fill="#3b82f6" />
-          <text x="55" y="160" textAnchor="middle" fontSize="7" fill="#1e40af" fontFamily="Arial, sans-serif" fontWeight="600">DIN BILD</text>
-          <text x="55" y="170" textAnchor="middle" fontSize="6" fill="#64748b" fontFamily="Arial, sans-serif">valfri design</text>
-        </>
-      )}
-
-      {showText && !showImage && (
-        // Text only
-        <>
-          <text x="55" y="118" textAnchor="middle" fontSize="8" fill="#1e3a8a" fontFamily="Arial Black, sans-serif" fontWeight="900">
-            {label.length > 9 ? label.slice(0, 9) : label}
-          </text>
-          {label.length > 9 && (
-            <text x="55" y="130" textAnchor="middle" fontSize="8" fill="#1e3a8a" fontFamily="Arial Black, sans-serif" fontWeight="900">
-              {label.slice(9, 18)}
-            </text>
-          )}
-          <line x1="35" y1="138" x2="75" y2="138" stroke="#1e40af" strokeWidth="1" opacity="0.3" />
-          <text x="55" y="152" textAnchor="middle" fontSize="6.5" fill="#3b82f6" fontFamily="Arial, sans-serif">HYDRA SHAKERS</text>
-          <text x="55" y="163" textAnchor="middle" fontSize="5.5" fill="#94a3b8" fontFamily="Arial, sans-serif">800ml</text>
-          <text x="55" y="188" textAnchor="middle" fontSize="6" fill="#64748b" fontFamily="Arial, sans-serif">din text, din stil</text>
-        </>
-      )}
-
-      {showText && showImage && (
-        // Text + image
-        <>
-          {/* Small image top */}
-          <rect x="34" y="103" width="42" height="32" rx="3" fill="#dbeafe" />
-          <path d="M38 128 L44 118 L50 124 L57 114 L64 128 Z" fill="#93c5fd" />
-          <circle cx="41" cy="112" r="3.5" fill="#3b82f6" />
-          {/* Text below image */}
-          <text x="55" y="148" textAnchor="middle" fontSize="7.5" fill="#1e3a8a" fontFamily="Arial Black, sans-serif" fontWeight="900">
-            {label.length > 9 ? label.slice(0, 9) : label || 'DIN TEXT'}
-          </text>
-          {(label.length > 9) && (
-            <text x="55" y="159" textAnchor="middle" fontSize="7.5" fill="#1e3a8a" fontFamily="Arial Black, sans-serif" fontWeight="900">
-              {label.slice(9, 18)}
-            </text>
-          )}
-          <line x1="35" y1="164" x2="75" y2="164" stroke="#1e40af" strokeWidth="1" opacity="0.3" />
-          <text x="55" y="176" textAnchor="middle" fontSize="6" fill="#3b82f6" fontFamily="Arial, sans-serif">HYDRA SHAKERS</text>
-          <text x="55" y="188" textAnchor="middle" fontSize="5.5" fill="#94a3b8" fontFamily="Arial, sans-serif">text & bild combo</text>
-        </>
-      )}
-    </svg>
-  )
-}
-
 // ─── Pricing tier data ───────────────────────────────────────────────────────
 const tiers = [
   {
     name: 'Bara Text',
     price: 120,
     icon: Type,
-    showText: true,
-    showImage: false,
+    image: '/shaker-white.jpg',
     color: 'from-blue-700 to-blue-500',
     border: 'border-blue-500/40',
     glow: 'hover:shadow-blue-500/20',
@@ -144,8 +19,7 @@ const tiers = [
     name: 'Med Bild',
     price: 130,
     icon: Image,
-    showText: false,
-    showImage: true,
+    image: '/shaker-clear.jpg',
     color: 'from-indigo-600 to-blue-500',
     border: 'border-indigo-400/50',
     glow: 'hover:shadow-indigo-500/25',
@@ -156,8 +30,7 @@ const tiers = [
     name: 'Text & Bild',
     price: 140,
     icon: Layers,
-    showText: true,
-    showImage: true,
+    image: '/shaker-black.jpg',
     color: 'from-blue-600 to-cyan-500',
     border: 'border-cyan-400/40',
     glow: 'hover:shadow-cyan-500/20',
@@ -218,12 +91,12 @@ export default function Pricing() {
               >
                 {/* Popular badge */}
                 {tier.popular && (
-                  <div className="absolute top-0 left-0 right-0 text-center py-1.5 bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-xs font-bold tracking-widest uppercase">
+                  <div className="absolute top-0 left-0 right-0 text-center py-1.5 bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-xs font-bold tracking-widest uppercase z-10">
                     Mest Populär
                   </div>
                 )}
 
-                <div className={`p-6 pt-${tier.popular ? '10' : '6'}`}>
+                <div className={`p-6 ${tier.popular ? 'pt-10' : 'pt-6'} flex flex-col flex-1`}>
                   {/* Icon + name */}
                   <div className="flex items-center gap-3 mb-4">
                     <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${tier.color} shadow-lg`}>
@@ -239,19 +112,19 @@ export default function Pricing() {
                     <p className="text-gray-500 text-sm mt-1">per shaker · inkl. moms</p>
                   </div>
 
-                  {/* Shaker mockup */}
+                  {/* Product photo */}
                   <div className="flex justify-center mb-6">
-                    <div className="w-28 h-64 relative">
-                      <ShakerMockup
-                        showText={tier.showText}
-                        showImage={tier.showImage}
-                        customText={previewText}
+                    <div className="w-36 h-48 relative rounded-xl overflow-hidden bg-white/5">
+                      <img
+                        src={tier.image}
+                        alt={`Perfect Shaker Activ 800ml – ${tier.name}`}
+                        className="w-full h-full object-contain object-center p-2"
                       />
                     </div>
                   </div>
 
                   {/* Features */}
-                  <ul className="space-y-2.5 mb-6">
+                  <ul className="space-y-2.5 mb-6 flex-1">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-center gap-2.5 text-sm text-gray-300">
                         <Check size={15} className="text-blue-400 flex-shrink-0" />
@@ -301,10 +174,19 @@ export default function Pricing() {
 
               {/* Image upload placeholder */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Din bild <span className="text-gray-500 font-normal">(skickas via Instagram)</span></label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Din bild <span className="text-gray-500 font-normal">(skickas via Instagram)</span>
+                </label>
                 <div className="w-full bg-[#070a14] border border-dashed border-white/15 rounded-xl px-4 py-6 text-center text-gray-600 text-sm">
                   Skicka din logga/bild direkt till{' '}
-                  <a href="https://www.instagram.com/hydrashakers" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">@hydrashakers</a>
+                  <a
+                    href="https://www.instagram.com/hydrashakers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:underline"
+                  >
+                    @hydrashakers
+                  </a>
                 </div>
               </div>
 
@@ -316,10 +198,31 @@ export default function Pricing() {
             {/* Shaker preview */}
             <div className="flex-shrink-0 flex flex-col items-center gap-3">
               <p className="text-gray-500 text-xs uppercase tracking-widest font-medium">Förhandsgranskning</p>
-              <div className="w-32 h-72 relative">
-                <ShakerMockup showText showImage={false} customText={previewText || 'DIN TEXT'} />
+              <div className="w-40 h-52 relative rounded-xl overflow-hidden bg-white/5 flex items-center justify-center">
+                <img
+                  src="/shaker-white.jpg"
+                  alt="Perfect Shaker Activ 800ml"
+                  className="w-full h-full object-contain p-3"
+                />
+                {previewText && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span
+                      className="text-blue-900 font-black text-center leading-tight px-2"
+                      style={{
+                        fontSize: previewText.length > 10 ? '10px' : '13px',
+                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
+                        maxWidth: '80px',
+                        wordBreak: 'break-word',
+                      }}
+                    >
+                      {previewText.toUpperCase()}
+                    </span>
+                  </div>
+                )}
               </div>
-              <p className="text-gray-600 text-xs">Text & Bild-versionen uppdateras live</p>
+              <p className="text-gray-600 text-xs text-center max-w-[140px]">
+                {previewText ? `"${previewText.toUpperCase()}" visas på shakern` : 'Skriv din text för att förhandsgranska'}
+              </p>
             </div>
           </div>
         </div>
