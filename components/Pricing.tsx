@@ -13,14 +13,6 @@ const VARIANTS = [
     glowColor: 'rgba(147,197,253,0.18)',
   },
   {
-    name: 'Klar',
-    photo: '/shaker-clear.jpg',
-    textColor: '#1a3a7a',
-    textStroke: '0.4px rgba(200,220,255,0.6)',
-    textShadow: '0 0 8px rgba(255,255,255,0.8), 0 1px 3px rgba(200,220,255,0.6)',
-    glowColor: 'rgba(99,179,237,0.14)',
-  },
-  {
     name: 'Svart',
     photo: '/shaker-black.jpg',
     textColor: '#93c5fd',
