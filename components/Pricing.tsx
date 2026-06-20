@@ -89,6 +89,29 @@ export default function Pricing() {
           {/* ── LEFT: Real product photo ── */}
           <div className="flex flex-col items-center">
 
+            {/* Glowing card frame */}
+            <div
+              className="relative rounded-[2rem] p-6 sm:p-8 mb-0"
+              style={{
+                background: 'linear-gradient(160deg, rgba(15,25,60,0.75) 0%, rgba(4,6,18,0.90) 100%)',
+                border: '1px solid rgba(59,130,246,0.30)',
+                boxShadow: '0 0 0 1px rgba(59,130,246,0.08), 0 0 60px rgba(59,130,246,0.14), 0 24px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07)',
+              }}
+            >
+              {/* Spotlight from top */}
+              <div
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1/2 pointer-events-none rounded-t-[2rem] overflow-hidden"
+                style={{ background: 'radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 70%)' }}
+              />
+              {/* Corner accent — top left */}
+              <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-blue-400/40 rounded-tl-xl pointer-events-none" />
+              {/* Corner accent — top right */}
+              <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-blue-400/40 rounded-tr-xl pointer-events-none" />
+              {/* Corner accent — bottom left */}
+              <div className="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-blue-400/30 rounded-bl-xl pointer-events-none" />
+              {/* Corner accent — bottom right */}
+              <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-blue-400/30 rounded-br-xl pointer-events-none" />
+
             {/* Photo with 3D tilt + text overlay */}
             <div
               ref={containerRef}
@@ -101,7 +124,7 @@ export default function Pricing() {
                   ? 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)'
                   : 'transform 0.08s linear',
                 willChange: 'transform',
-                filter: 'drop-shadow(0 32px 52px rgba(0,0,0,0.75)) drop-shadow(0 0 28px rgba(59,130,246,0.35))',
+                filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 32px rgba(59,130,246,0.40))',
               }}
             >
               {/* Ambient glow halo behind bottle */}
@@ -165,6 +188,7 @@ export default function Pricing() {
                 </div>
               )}
             </div>
+            </div>{/* end card frame */}
 
             {/* Variant selector */}
             <div className="mt-8 flex flex-col items-center gap-3">
