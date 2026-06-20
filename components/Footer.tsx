@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden ring-1 ring-blue-500/30 flex-shrink-0">
               <img
-                src="/logo.svg"
+                src="/logo.png"
                 alt="Hydra Shakers"
                 className="w-full h-full object-contain"
               />
