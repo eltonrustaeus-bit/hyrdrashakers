@@ -5,14 +5,6 @@ import { Check, Instagram, Type, Image as ImageIcon } from 'lucide-react'
 
 const VARIANTS = [
   {
-    name: 'Vit',
-    photo: '/shaker-white.jpg',
-    textColor: '#1a3a7a',
-    textStroke: '0.4px rgba(255,255,255,0.8)',
-    textShadow: '0 0 6px rgba(255,255,255,0.9), 0 1px 3px rgba(255,255,255,0.7)',
-    glowColor: 'rgba(147,197,253,0.18)',
-  },
-  {
     name: 'Svart',
     photo: '/shaker-black.jpg',
     textColor: '#93c5fd',
