@@ -1,5 +1,13 @@
 import { Instagram, Mail, MapPin } from 'lucide-react'
 
+function TikTokIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.67a8.16 8.16 0 0 0 4.77 1.52V6.75a4.85 4.85 0 0 1-1-.06z"/>
+    </svg>
+  )
+}
+
 export default function Footer() {
   return (
     <footer className="bg-[#030810] border-t border-white/10 pt-16 pb-8 px-4">
@@ -75,15 +83,33 @@ export default function Footer() {
                 </div>
               </a>
 
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <a
+                href="https://www.tiktok.com/@hydrashakers"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-[#010101] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+                  <TikTokIcon size={16} />
+                </div>
+                <div>
+                  <p className="text-white text-sm font-medium group-hover:text-gray-300 transition-colors duration-200">@hydrashakers</p>
+                  <p className="text-gray-500 text-xs">Följ oss på TikTok</p>
+                </div>
+              </a>
+
+              <a
+                href="mailto:hydrashakers@gmail.com"
+                className="flex items-center gap-3 group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
                   <Mail size={16} className="text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-white text-sm font-medium">Beställ via DM</p>
-                  <p className="text-gray-500 text-xs">Skicka ett meddelande på Instagram</p>
+                  <p className="text-white text-sm font-medium group-hover:text-blue-300 transition-colors duration-200">hydrashakers@gmail.com</p>
+                  <p className="text-gray-500 text-xs">Maila oss</p>
                 </div>
-              </div>
+              </a>
 
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
