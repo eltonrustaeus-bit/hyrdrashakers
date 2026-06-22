@@ -24,13 +24,11 @@ export default function Pricing() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const variant     = VARIANTS[variantIdx]
-  const price       = hasText && hasImage ? 140 : hasImage ? 130 : 120
+  const price       = hasImage ? 140 : 120
   const labelText   = hasText ? customText : ''
   const isReturning = tilt.x === 0 && tilt.y === 0
 
-  const priceColor =
-    price === 140 ? 'text-cyan-300' :
-    price === 130 ? 'text-indigo-300' : 'text-white'
+  const priceColor = hasImage ? 'text-cyan-300' : 'text-white'
 
   function handleMouseMove(e: React.MouseEvent) {
     if (!containerRef.current) return
@@ -261,7 +259,7 @@ export default function Pricing() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-indigo-400 text-sm">+10 kr</span>
+                  <span className="text-indigo-400 text-sm">+20 kr</span>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasImage ? 'bg-indigo-600 border-indigo-600' : 'border-white/25'}`}>
                     {hasImage && <Check size={13} className="text-white" strokeWidth={2.5} />}
                   </div>
@@ -307,10 +305,9 @@ export default function Pricing() {
                   <span className="text-gray-500 text-sm ml-1">/ shaker · inkl. moms</span>
                 </div>
                 <p className="text-gray-600 text-xs mt-1">
-                  {price === 120 && 'Baspris — lägg till text eller bild ovan'}
-                  {price === 130 && !hasText && 'Med bild (+10 kr)'}
-                  {price === 130 &&  hasText && 'Med text (ingår i baspriset)'}
-                  {price === 140 && 'Med text + bild (+20 kr totalt)'}
+                  {!hasImage && 'Baspris — lägg till bild för +20 kr'}
+                  {hasImage && !hasText && 'Med bild (+20 kr)'}
+                  {hasImage &&  hasText && 'Med text + bild (+20 kr totalt)'}
                 </p>
               </div>
 
