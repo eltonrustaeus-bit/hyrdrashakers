@@ -100,38 +100,43 @@ export default function Pricing() {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               className="relative w-56 h-72 sm:w-72 sm:h-[420px] cursor-pointer select-none"
-              style={{
-                transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                transition: isReturning
-                  ? 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)'
-                  : 'transform 0.08s linear',
-                willChange: 'transform',
-                filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 32px rgba(59,130,246,0.40))',
-              }}
             >
-              {/* Ambient glow halo behind bottle */}
+              {/* Bottle — tilts with mouse */}
               <div
-                className="absolute inset-0 pointer-events-none rounded-full blur-2xl scale-75"
-                style={{ background: `radial-gradient(ellipse 70% 80% at 50% 55%, ${variant.glowColor} 0%, transparent 70%)` }}
-              />
+                className="absolute inset-0"
+                style={{
+                  transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                  transition: isReturning
+                    ? 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)'
+                    : 'transform 0.08s linear',
+                  willChange: 'transform',
+                  filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 32px rgba(59,130,246,0.40))',
+                }}
+              >
+                {/* Ambient glow halo behind bottle */}
+                <div
+                  className="absolute inset-0 pointer-events-none rounded-full blur-2xl scale-75"
+                  style={{ background: `radial-gradient(ellipse 70% 80% at 50% 55%, ${variant.glowColor} 0%, transparent 70%)` }}
+                />
+                {/* Real product photo */}
+                <img
+                  src={variant.photo}
+                  alt={`Perfect Shaker Activ 800ml – ${variant.name}`}
+                  className="w-full h-full object-contain select-none pointer-events-none"
+                  draggable={false}
+                />
+              </div>
 
-              {/* Real product photo */}
-              <img
-                src={variant.photo}
-                alt={`Perfect Shaker Activ 800ml – ${variant.name}`}
-                className="w-full h-full object-contain select-none pointer-events-none relative z-10"
-                draggable={false}
-              />
-
-              {/* Live text overlay on label area */}
+              {/* Text overlay — always flat/horizontal, never tilts */}
               {(labelText || hasImage) && (
                 <div
-                  className="absolute pointer-events-none flex flex-col items-center justify-center gap-1 z-20 rounded-lg"
+                  className="absolute pointer-events-none flex flex-col items-center justify-center gap-1 rounded-lg"
                   style={{
                     top: '44%', bottom: '30%', left: '22%', right: '22%',
-                    background: variantIdx === 2
-                      ? 'rgba(0,0,0,0.25)'
-                      : 'rgba(255,255,255,0.15)',
+                    zIndex: 20,
+                    background: variantIdx === 0
+                      ? 'rgba(255,255,255,0.15)'
+                      : 'rgba(0,0,0,0.25)',
                     backdropFilter: 'blur(1px)',
                   }}
                 >
