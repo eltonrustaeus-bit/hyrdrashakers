@@ -135,51 +135,55 @@ export default function Pricing() {
                 />
               </div>
 
-              {/* Text overlay — always flat/horizontal, never tilts */}
+              {/* Text overlay — rotated along bottle, always stays flat (no 3D tilt) */}
               {(labelText || hasImage) && (
                 <div
-                  className="absolute pointer-events-none flex flex-col items-center justify-center gap-1 rounded-lg"
+                  className="absolute pointer-events-none flex items-center justify-center rounded-lg"
                   style={{
-                    top: '44%', bottom: '30%', left: '22%', right: '22%',
+                    top: '25%', bottom: '15%', left: '32%', right: '32%',
                     zIndex: 20,
                     background: variantIdx === 0
-                      ? 'rgba(255,255,255,0.15)'
-                      : 'rgba(0,0,0,0.25)',
+                      ? 'rgba(255,255,255,0.12)'
+                      : 'rgba(0,0,0,0.22)',
                     backdropFilter: 'blur(1px)',
+                    transform: 'rotate(-90deg)',
                   }}
                 >
-                  {labelText && (
-                    <span
-                      className="font-black text-center leading-tight tracking-wide block w-full px-1"
-                      style={{
-                        color: variant.textColor,
-                        fontSize: labelText.length > 14 ? '8px' : labelText.length > 9 ? '10px' : '12px',
-                        textShadow: variant.textShadow,
-                        WebkitTextStroke: variant.textStroke,
-                        wordBreak: 'break-word',
-                        fontFamily: 'Arial Black, sans-serif',
-                        paintOrder: 'stroke fill',
-                      }}
-                    >
-                      {labelText.toUpperCase()}
-                    </span>
-                  )}
-                  {hasImage && (
-                    <span
-                      className="block text-center"
-                      style={{
-                        fontSize: '7px',
-                        color: variant.textColor,
-                        opacity: 0.8,
-                        textShadow: variant.textShadow,
-                        fontFamily: 'Arial, sans-serif',
-                        letterSpacing: '0.08em',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {labelText ? '+ DIN BILD' : '[ DIN BILD ]'}
-                    </span>
-                  )}
+                  <div className="flex flex-col items-center justify-center gap-1 w-full px-1">
+                    {labelText && (
+                      <span
+                        className="font-black text-center leading-tight tracking-widest block w-full"
+                        style={{
+                          color: variant.textColor,
+                          fontSize: labelText.length > 14 ? '7px' : labelText.length > 9 ? '9px' : '11px',
+                          textShadow: variant.textShadow,
+                          WebkitTextStroke: variant.textStroke,
+                          whiteSpace: 'nowrap',
+                          fontFamily: 'Arial Black, sans-serif',
+                          paintOrder: 'stroke fill',
+                        }}
+                      >
+                        {labelText.toUpperCase()}
+                      </span>
+                    )}
+                    {hasImage && (
+                      <span
+                        className="block text-center"
+                        style={{
+                          fontSize: '6px',
+                          color: variant.textColor,
+                          opacity: 0.8,
+                          textShadow: variant.textShadow,
+                          fontFamily: 'Arial, sans-serif',
+                          letterSpacing: '0.08em',
+                          fontWeight: 'bold',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {labelText ? '+ DIN BILD' : '[ DIN BILD ]'}
+                      </span>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

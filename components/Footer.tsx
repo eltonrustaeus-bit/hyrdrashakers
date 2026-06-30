@@ -84,7 +84,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://www.tiktok.com/@hydrashakers"
+                href="https://www.tiktok.com/@hydrashakers0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 group"
