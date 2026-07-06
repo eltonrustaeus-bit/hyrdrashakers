@@ -52,7 +52,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-gray-300 hover:text-white text-sm font-medium transition-colors duration-200 relative group"
+                className="text-white/75 hover:text-white text-sm font-medium transition-colors duration-200 relative group"
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300" />
@@ -75,7 +75,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-300 hover:text-white transition-colors p-2"
+            className="md:hidden text-white/75 hover:text-white transition-colors p-2"
             aria-label="Öppna meny"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -92,7 +92,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block text-gray-300 hover:text-white text-base font-medium py-2 transition-colors duration-200"
+                className="block text-white/75 hover:text-white text-base font-medium py-2 transition-colors duration-200"
               >
                 {link.label}
               </a>

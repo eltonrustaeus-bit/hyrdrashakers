@@ -56,7 +56,7 @@ export default function Hero() {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-gray-300 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
+            <p className="text-white/80 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
               Vattenflaskan för seriösa atleter. Personlig design, premium kvalitet — skapad för att hänga med i gymmet och allt däremellan.
             </p>
 
@@ -91,7 +91,7 @@ export default function Hero() {
               ].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <div className="text-2xl font-bold text-blue-400">{stat.value}</div>
-                  <div className="text-gray-400 text-sm mt-0.5">{stat.label}</div>
+                  <div className="text-white/60 text-sm mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </div>

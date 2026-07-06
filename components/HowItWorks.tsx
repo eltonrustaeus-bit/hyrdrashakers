@@ -53,7 +53,7 @@ export default function HowItWorks() {
               fungerar
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-blue-100/70 text-lg max-w-2xl mx-auto">
             Tre enkla steg för att få din drömflaska. Det har aldrig varit enklare.
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function HowItWorks() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
                     {step.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+                  <p className="text-white/70 text-sm leading-relaxed max-w-xs">
                     {step.description}
                   </p>
 

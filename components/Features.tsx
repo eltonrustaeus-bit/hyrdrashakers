@@ -70,7 +70,7 @@ export default function Features() {
               Hydra Shakers?
             </span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-blue-100/70 text-lg max-w-2xl mx-auto">
             Byggd för gymmet. Designad för dig. Vi kombinerar prestanda och stil utan kompromiss.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function Features() {
                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors duration-300">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400 leading-relaxed text-sm">
+                <p className="text-white/70 leading-relaxed text-sm">
                   {feature.description}
                 </p>
 

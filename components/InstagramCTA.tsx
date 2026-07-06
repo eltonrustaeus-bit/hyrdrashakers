@@ -28,7 +28,7 @@ export default function InstagramCTA() {
 
         {/* Label */}
         <div className="mb-6">
-          <span className="text-gray-400 text-sm font-semibold uppercase tracking-widest">
+          <span className="text-white/55 text-sm font-semibold uppercase tracking-widest">
             Hitta oss på sociala medier
           </span>
         </div>
@@ -47,7 +47,7 @@ export default function InstagramCTA() {
           </div>
         </div>
 
-        <p className="text-gray-300 text-lg sm:text-xl mb-10 max-w-xl mx-auto">
+        <p className="text-white/80 text-lg sm:text-xl mb-10 max-w-xl mx-auto">
           Följ oss för inspiration och senaste nytt om Hydra Shakers.
         </p>
 

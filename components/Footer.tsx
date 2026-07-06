@@ -29,10 +29,10 @@ export default function Footer() {
                 HYDRA <span className="text-blue-400">Shakers</span>
               </span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+            <p className="text-white/65 text-sm leading-relaxed mb-4">
               Vi skapar personliga vattenflaskor för seriösa gymmare. Välj din variant, lägg till text eller bild — och gör flaskan till din.
             </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-white/45 text-sm leading-relaxed">
               Baserade i Sverige. Beställning sker direkt via Instagram DM.
             </p>
           </div>
@@ -53,7 +53,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white text-sm transition-colors duration-200 hover:translate-x-1 inline-block"
+                    className="text-white/65 hover:text-white text-sm transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
                     {link.label}
                   </a>
@@ -79,7 +79,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm font-medium group-hover:text-pink-300 transition-colors duration-200">@hydrashakers</p>
-                  <p className="text-gray-500 text-xs">Följ oss på Instagram</p>
+                  <p className="text-white/45 text-xs">Följ oss på Instagram</p>
                 </div>
               </a>
 
@@ -94,7 +94,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm font-medium group-hover:text-gray-300 transition-colors duration-200">@hydrashakers</p>
-                  <p className="text-gray-500 text-xs">Följ oss på TikTok</p>
+                  <p className="text-white/45 text-xs">Följ oss på TikTok</p>
                 </div>
               </a>
 
@@ -107,7 +107,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm font-medium group-hover:text-blue-300 transition-colors duration-200">hydrashakers@gmail.com</p>
-                  <p className="text-gray-500 text-xs">Maila oss</p>
+                  <p className="text-white/45 text-xs">Maila oss</p>
                 </div>
               </a>
 
@@ -117,7 +117,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-white text-sm font-medium">Sverige</p>
-                  <p className="text-gray-500 text-xs">Levererar inom Sverige</p>
+                  <p className="text-white/45 text-xs">Levererar inom Sverige</p>
                 </div>
               </div>
             </div>
@@ -126,14 +126,14 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-600 text-xs">
+          <p className="text-white/30 text-xs">
             © 2026 Hydra Shakers. Alla rättigheter förbehållna.
           </p>
           <a
             href="https://www.instagram.com/hydrashakers"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors duration-200 text-xs group"
+            className="flex items-center gap-2 text-white/45 hover:text-white transition-colors duration-200 text-xs group"
           >
             <Instagram size={13} className="text-pink-400 group-hover:text-pink-300 transition-colors" />
             @hydrashakers
