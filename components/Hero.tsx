@@ -57,7 +57,7 @@ export default function Hero() {
 
             {/* Subheadline */}
             <p className="text-white/80 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0">
-              Vattenflaskan för seriösa atleter. Personlig design, premium kvalitet — skapad för att hänga med i gymmet och allt däremellan.
+              Vattenflaskan för seriösa atleter. Personlig design och premium kvalitet skapad för att hänga med i gymmet och allt däremellan.
             </p>
 
             {/* CTA Buttons */}

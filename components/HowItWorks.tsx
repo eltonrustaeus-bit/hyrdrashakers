@@ -5,19 +5,19 @@ const steps = [
     number: '01',
     icon: Pencil,
     title: 'Välj din gymstil',
-    description: 'Berätta hur du vill ha din flaska. Välj variant, lägg till text eller bild — din gym-identitet.',
+    description: 'Berätta hur du vill ha din flaska. Välj variant, lägg till text eller bild och din gymidentitet.',
   },
   {
     number: '02',
     icon: Hammer,
-    title: 'Vi tillverkar den',
-    description: 'Vårt team skapar din unika flaska med omsorg och precision. Varje detalj görs med kärlek.',
+    title: 'Din idé blir verklighet',
+    description: 'Vi skapar din unika och personliga shaker med omsorg och precision.',
   },
   {
     number: '03',
     icon: PackageCheck,
     title: 'Redo för nästa pass',
-    description: 'Din personliga flaska levereras hem. Redo att hysa i gymmet.',
+    description: 'Din personliga flaska levereras hem. Redo att användas i gymmet.',
   },
 ]
 
@@ -106,17 +106,6 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* CTA below steps */}
-        <div className="text-center mt-16">
-          <a
-            href="https://www.instagram.com/hydrashakers"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl px-8 py-4 text-base transition-all duration-200 shadow-xl shadow-blue-600/25 hover:shadow-blue-500/40 hover:scale-105"
-          >
-            Kom igång nu →
-          </a>
-        </div>
       </div>
     </section>
   )

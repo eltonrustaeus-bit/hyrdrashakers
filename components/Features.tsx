@@ -3,21 +3,21 @@ import { Droplets, Lock, Thermometer, Palette } from 'lucide-react'
 const features = [
   {
     icon: Droplets,
-    title: 'BPA-fri & Säker',
+    title: 'BPA-fri & säker',
     description: '100% fri från skadliga ämnen. Säker för daglig träning och gjord för att hålla länge.',
     gradient: 'from-blue-600 to-blue-400',
     glow: 'shadow-blue-500/20',
   },
   {
     icon: Lock,
-    title: 'Läcksäker Design',
+    title: 'Läcksäker design',
     description: 'Kasta den i gymväskan utan att tänka en sekund. Tål smällar, stötar och svettig träning.',
     gradient: 'from-indigo-600 to-blue-500',
     glow: 'shadow-indigo-500/20',
   },
   {
     icon: Thermometer,
-    title: '800 ml Kapacitet',
+    title: '800 ml kapacitet',
     description: 'Rymmer mer än nog för ett helt träningspass. Stort nog att räcka, lätt nog att bära.',
     gradient: 'from-blue-500 to-cyan-500',
     glow: 'shadow-cyan-500/20',

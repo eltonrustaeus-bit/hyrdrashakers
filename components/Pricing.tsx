@@ -51,17 +51,15 @@ export default function Pricing() {
   const [hasText, setHasText]         = useState(false)
   const [customText, setCustomText]   = useState('')
   const [hasImage, setHasImage]       = useState(false)
-  const [textColorIdx, setTextColorIdx] = useState(0)
+  const [textColorIdx, setTextColorIdx] = useState(1)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const variant     = VARIANTS[variantIdx]
-  const price       = hasImage ? 140 : 120
+  const price       = (hasText && hasImage) ? 140 : hasImage ? 130 : 120
   const labelText   = hasText ? customText : ''
   const isReturning = tilt.x === 0 && tilt.y === 0
-
-  const priceColor = hasImage ? 'text-cyan-300' : 'text-white'
 
   function handleMouseMove(e: React.MouseEvent) {
     if (!containerRef.current) return
@@ -93,8 +91,8 @@ export default function Pricing() {
               din shaker
             </span>
           </h2>
-          <p className="text-blue-100/70 text-lg max-w-lg mx-auto">
-            Välj variant, lägg till text och bild — priset uppdateras i realtid.
+          <p className="text-white text-lg max-w-lg mx-auto">
+            Välj färg, lägg till text eller bild.
           </p>
         </div>
 
@@ -167,9 +165,7 @@ export default function Pricing() {
                   style={{
                     top: '25%', bottom: '15%', left: '32%', right: '32%',
                     zIndex: 20,
-                    background: variantIdx === 0
-                      ? 'rgba(255,255,255,0.12)'
-                      : 'rgba(0,0,0,0.22)',
+                    background: 'rgba(0,0,0,0.22)',
                     backdropFilter: 'blur(1px)',
                     transform: 'rotate(-90deg)',
                   }}
@@ -216,19 +212,18 @@ export default function Pricing() {
 
             {/* Order info */}
             <div className="mt-5 text-center space-y-1">
-              <p className="text-white/50 text-xs">
-                Skicka text/bild via{' '}
+              <p className="text-white/70 text-xs">
+                Skicka din bild via{' '}
                 <a href="https://www.instagram.com/hydrashakers" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-                  Instagram DM
+                  Instagram DM till @hydrashakers
                 </a>
-                {' '}när du beställer
               </p>
-              <p className="text-white/50 text-xs">Betalning sker via Swish</p>
+              <p className="text-white/70 text-xs">Betalning sker via Swish</p>
             </div>
 
             {/* Variant selector */}
             <div className="mt-8 flex flex-col items-center gap-3">
-              <p className="text-white/50 text-xs uppercase tracking-widest font-medium">Välj variant</p>
+              <p className="text-white/80 text-xs uppercase tracking-widest font-medium">Välj variant</p>
               <div className="flex gap-5">
                 {VARIANTS.map((v, i) => (
                   <button
@@ -272,7 +267,7 @@ export default function Pricing() {
                   </div>
                   <div>
                     <p className="text-white font-semibold">Lägg till text</p>
-                    <p className="text-white/50 text-xs mt-0.5">Valfri text · upp till 2 rader</p>
+                    <p className="text-white/70 text-xs mt-0.5">Valfri text</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
@@ -293,7 +288,7 @@ export default function Pricing() {
                     className="w-full bg-[#070a14] border border-white/10 focus:border-blue-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-colors duration-200"
                   />
                   <div className="flex items-center gap-3 mt-3">
-                    <span className="text-white/40 text-xs">Textfärg:</span>
+                    <span className="text-white/70 text-xs">Textfärg:</span>
                     <div className="flex gap-2">
                       {TEXT_COLORS.map((c, i) => (
                         <button
@@ -309,9 +304,9 @@ export default function Pricing() {
                         />
                       ))}
                     </div>
-                    <span className="text-white/35 text-xs">{TEXT_COLORS[textColorIdx].name}</span>
+                    <span className="text-white/70 text-xs">{TEXT_COLORS[textColorIdx].name}</span>
                   </div>
-                  <p className="text-white/35 text-xs mt-2">{customText.length}/28 tecken · visas direkt på shakern till vänster</p>
+                  <p className="text-white/60 text-xs mt-2">{customText.length}/28 tecken</p>
                 </div>
               </div>
             </div>
@@ -328,11 +323,11 @@ export default function Pricing() {
                   </div>
                   <div>
                     <p className="text-white font-semibold">Lägg till bild</p>
-                    <p className="text-white/50 text-xs mt-0.5">Logga, foto eller grafik · hög upplösning</p>
+                    <p className="text-white/70 text-xs mt-0.5">Logga, foto eller grafik</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-indigo-400 text-sm">+20 kr</span>
+                  <span className="text-indigo-400 text-sm">+{hasText ? 20 : 10} kr</span>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasImage ? 'bg-indigo-600 border-indigo-600' : 'border-white/25'}`}>
                     {hasImage && <Check size={13} className="text-white" strokeWidth={2.5} />}
                   </div>
@@ -340,12 +335,11 @@ export default function Pricing() {
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${hasImage ? 'max-h-40' : 'max-h-0'}`}>
                 <div className="px-5 pb-5 pt-1">
-                  <div className="bg-[#070a14] border border-dashed border-white/15 rounded-xl px-4 py-4 text-center text-white/55 text-sm leading-relaxed">
-                    Skicka din bild/logga via{' '}
+                  <div className="bg-[#070a14] border border-dashed border-white/15 rounded-xl px-4 py-4 text-center text-white/80 text-sm leading-relaxed">
+                    Skicka din bild via Instagram DM till{' '}
                     <a href="https://www.instagram.com/hydrashakers" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
                       @hydrashakers
-                    </a>{' '}
-                    när du beställer
+                    </a>
                   </div>
                 </div>
               </div>
@@ -353,7 +347,7 @@ export default function Pricing() {
 
             {/* Summary + price + CTA */}
             <div className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
-              <p className="text-white/50 text-xs uppercase tracking-widest font-semibold mb-3">Vad ingår</p>
+              <p className="text-white/80 text-xs uppercase tracking-widest font-semibold mb-3">Vad ingår</p>
               <ul className="space-y-2 mb-5">
                 {[
                   { label: 'Perfect Shaker Activ 800ml', show: true },
@@ -362,7 +356,7 @@ export default function Pricing() {
                   { label: 'Anpassad bild/logga',          show: hasImage },
                   { label: 'Hög tryckkvalitet',            show: hasImage },
                 ].filter(i => i.show).map(item => (
-                  <li key={item.label} className="flex items-center gap-2.5 text-sm text-white/85">
+                  <li key={item.label} className="flex items-center gap-2.5 text-sm text-white">
                     <Check size={14} className="text-blue-400 flex-shrink-0" />
                     {item.label}
                   </li>
@@ -371,16 +365,17 @@ export default function Pricing() {
 
               <div className="border-t border-white/10 pt-4 mb-4">
                 <div className="flex items-baseline gap-2">
-                  <span className={`text-5xl font-black tabular-nums transition-colors duration-300 ${priceColor}`}>
+                  <span className="text-5xl font-black tabular-nums transition-colors duration-300 text-white">
                     {price}
                   </span>
                   <span className="text-blue-300 text-xl font-semibold">kr</span>
-                  <span className="text-white/50 text-sm ml-1">/ shaker · inkl. moms</span>
+                  <span className="text-white/70 text-sm ml-1">inkl. moms</span>
                 </div>
-                <p className="text-white/40 text-xs mt-1">
-                  {!hasImage && 'Baspris — lägg till bild för +20 kr'}
-                  {hasImage && !hasText && 'Med bild (+20 kr)'}
-                  {hasImage &&  hasText && 'Med text + bild (+20 kr totalt)'}
+                <p className="text-white/60 text-xs mt-1">
+                  {!hasImage && !hasText && 'Baspris, lägg till bild för +10 kr'}
+                  {!hasImage &&  hasText && 'Med text (ingår i priset)'}
+                  {hasImage  && !hasText && 'Med bild, +10 kr extra'}
+                  {hasImage  &&  hasText && 'Med text och bild, +20 kr extra'}
                 </p>
               </div>
 
@@ -393,8 +388,8 @@ export default function Pricing() {
                 <Instagram size={18} />
                 Beställ via Instagram
               </a>
-              <p className="text-white/40 text-xs text-center mt-3 leading-relaxed">
-                DM @hydrashakers med din design — vi återkommer med bekräftelse och leveranstid
+              <p className="text-white/70 text-xs text-center mt-3 leading-relaxed">
+                Skicka din text och/eller bild via DM på Instagram till @hydrashakers. Vi återkommer med bekräftelse och leveranstid.
               </p>
             </div>
           </div>
