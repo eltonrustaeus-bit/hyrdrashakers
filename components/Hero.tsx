@@ -63,9 +63,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
-                href="https://www.instagram.com/hydrashakers"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#priser"
                 className="group inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded-xl px-8 py-4 text-base transition-all duration-200 shadow-xl shadow-blue-700/30 hover:shadow-blue-600/50 hover:scale-105"
               >
                 Designa din flaska
@@ -153,12 +151,6 @@ export default function Hero() {
         </svg>
       </div>
 
-      <style jsx>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </section>
   )
 }

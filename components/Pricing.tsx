@@ -3,6 +3,30 @@
 import { useState, useRef } from 'react'
 import { Check, Instagram, Type, Image as ImageIcon } from 'lucide-react'
 
+const TEXT_COLORS = [
+  {
+    name: 'Vit',
+    swatch: '#ffffff',
+    value: '#ffffff',
+    stroke: '0.5px rgba(0,0,0,0.7)',
+    shadow: '0 0 6px rgba(255,255,255,0.6), 0 1px 4px rgba(0,0,0,0.9)',
+  },
+  {
+    name: 'Svart',
+    swatch: '#111111',
+    value: '#111111',
+    stroke: '0.5px rgba(255,255,255,0.25)',
+    shadow: '0 1px 3px rgba(0,0,0,0.6)',
+  },
+  {
+    name: 'Blå',
+    swatch: '#3b82f6',
+    value: '#60a5fa',
+    stroke: '0.5px rgba(0,0,0,0.8)',
+    shadow: '0 0 8px rgba(59,130,246,0.9), 0 0 18px rgba(59,130,246,0.5), 0 1px 4px rgba(0,0,0,0.9)',
+  },
+]
+
 const VARIANTS = [
   {
     name: 'Vit',
@@ -24,9 +48,10 @@ const VARIANTS = [
 
 export default function Pricing() {
   const [variantIdx, setVariantIdx] = useState(0)
-  const [hasText, setHasText]       = useState(false)
-  const [customText, setCustomText] = useState('')
-  const [hasImage, setHasImage]     = useState(false)
+  const [hasText, setHasText]         = useState(false)
+  const [customText, setCustomText]   = useState('')
+  const [hasImage, setHasImage]       = useState(false)
+  const [textColorIdx, setTextColorIdx] = useState(0)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
@@ -154,10 +179,10 @@ export default function Pricing() {
                       <span
                         className="font-black text-center leading-tight tracking-widest block w-full"
                         style={{
-                          color: variant.textColor,
+                          color: TEXT_COLORS[textColorIdx].value,
                           fontSize: labelText.length > 14 ? '12px' : labelText.length > 9 ? '18px' : '26px',
-                          textShadow: variant.textShadow,
-                          WebkitTextStroke: variant.textStroke,
+                          textShadow: TEXT_COLORS[textColorIdx].shadow,
+                          WebkitTextStroke: TEXT_COLORS[textColorIdx].stroke,
                           whiteSpace: 'nowrap',
                           fontFamily: 'Arial Black, sans-serif',
                           paintOrder: 'stroke fill',
@@ -171,9 +196,9 @@ export default function Pricing() {
                         className="block text-center"
                         style={{
                           fontSize: '10px',
-                          color: variant.textColor,
+                          color: TEXT_COLORS[textColorIdx].value,
                           opacity: 0.8,
-                          textShadow: variant.textShadow,
+                          textShadow: TEXT_COLORS[textColorIdx].shadow,
                           fontFamily: 'Arial, sans-serif',
                           letterSpacing: '0.08em',
                           fontWeight: 'bold',
@@ -188,6 +213,18 @@ export default function Pricing() {
               )}
             </div>
             </div>{/* end card frame */}
+
+            {/* Order info */}
+            <div className="mt-5 text-center space-y-1">
+              <p className="text-white/50 text-xs">
+                Skicka text/bild via{' '}
+                <a href="https://www.instagram.com/hydrashakers" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
+                  Instagram DM
+                </a>
+                {' '}när du beställer
+              </p>
+              <p className="text-white/50 text-xs">Betalning sker via Swish</p>
+            </div>
 
             {/* Variant selector */}
             <div className="mt-8 flex flex-col items-center gap-3">
@@ -255,6 +292,25 @@ export default function Pricing() {
                     maxLength={28}
                     className="w-full bg-[#070a14] border border-white/10 focus:border-blue-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-colors duration-200"
                   />
+                  <div className="flex items-center gap-3 mt-3">
+                    <span className="text-white/40 text-xs">Textfärg:</span>
+                    <div className="flex gap-2">
+                      {TEXT_COLORS.map((c, i) => (
+                        <button
+                          key={c.name}
+                          onClick={() => setTextColorIdx(i)}
+                          title={c.name}
+                          className="w-6 h-6 rounded-full border-2 transition-all duration-150 hover:scale-110 focus:outline-none"
+                          style={{
+                            background: c.swatch,
+                            borderColor: textColorIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.2)',
+                            boxShadow: textColorIdx === i ? '0 0 0 2px rgba(96,165,250,0.5)' : undefined,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-white/35 text-xs">{TEXT_COLORS[textColorIdx].name}</span>
+                  </div>
                   <p className="text-white/35 text-xs mt-2">{customText.length}/28 tecken · visas direkt på shakern till vänster</p>
                 </div>
               </div>
