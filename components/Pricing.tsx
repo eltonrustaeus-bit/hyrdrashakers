@@ -379,17 +379,28 @@ export default function Pricing() {
                 </p>
               </div>
 
-              <a
-                href="https://www.instagram.com/hydrashakers"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl font-bold text-white text-base bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 transition-all duration-200 shadow-xl shadow-blue-700/25 hover:shadow-blue-500/35 hover:scale-[1.02]"
-              >
-                <Instagram size={18} />
-                Beställ via Instagram
-              </a>
+              <div className="flex flex-col gap-3">
+                <a
+                  href="https://www.instagram.com/hydrashakers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl font-bold text-white text-base bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 transition-all duration-200 shadow-xl shadow-blue-700/25 hover:shadow-blue-500/35 hover:scale-[1.02]"
+                >
+                  <Instagram size={18} />
+                  Beställ via Instagram
+                </a>
+                <a
+                  href="mailto:hydrashakers@gmail.com"
+                  className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl font-bold text-white text-base bg-white/[0.07] hover:bg-white/[0.12] border border-white/15 hover:border-white/25 transition-all duration-200 hover:scale-[1.02]"
+                >
+                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-blue-300">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                  Beställ via mejl
+                </a>
+              </div>
               <p className="text-white/70 text-xs text-center mt-3 leading-relaxed">
-                Skicka din text och/eller bild via DM på Instagram till @hydrashakers. Vi återkommer med bekräftelse och leveranstid.
+                Skicka din text och/eller bild via DM på Instagram eller till hydrashakers@gmail.com. Vi återkommer med bekräftelse och leveranstid.
               </p>
             </div>
           </div>
