@@ -107,6 +107,32 @@ export default function Features() {
             )
           })}
         </div>
+
+        {/* Ungt entreprenörskap */}
+        <div className="mt-10 relative rounded-2xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(15,25,60,0.8) 0%, rgba(4,6,18,0.9) 100%)',
+            border: '1px solid rgba(59,130,246,0.25)',
+            boxShadow: '0 0 40px rgba(59,130,246,0.08)',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
+          <div className="flex flex-col sm:flex-row items-center gap-6 px-8 py-7">
+            <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-700/30">
+              <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-blue-400 text-xs font-semibold uppercase tracking-widest mb-1">Ungt entreprenörskap</p>
+              <p className="text-white font-semibold text-base leading-snug">
+                En ung entreprenör som med hjälp av{' '}
+                <span className="text-blue-300">Ungdrive</span>{' '}
+                startat sitt första företag.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
