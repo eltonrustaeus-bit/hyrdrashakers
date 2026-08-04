@@ -25,6 +25,13 @@ const TEXT_COLORS = [
     stroke: '0.5px rgba(0,0,0,0.8)',
     shadow: '0 0 8px rgba(59,130,246,0.9), 0 0 18px rgba(59,130,246,0.5), 0 1px 4px rgba(0,0,0,0.9)',
   },
+  {
+    name: 'Röd',
+    swatch: '#ef4444',
+    value: '#ef4444',
+    stroke: '0.5px rgba(0,0,0,0.8)',
+    shadow: '0 0 8px rgba(239,68,68,0.8), 0 0 16px rgba(239,68,68,0.4), 0 1px 4px rgba(0,0,0,0.9)',
+  },
 ]
 
 const VARIANTS = [
@@ -65,7 +72,7 @@ export default function Pricing() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const variant     = VARIANTS[variantIdx]
-  const price       = (hasText && hasImage) ? 140 : hasImage ? 130 : 120
+  const price       = (hasText && hasImage) ? 150 : hasImage ? 130 : 120
   const labelText   = hasText ? customText : ''
   const isReturning = tilt.x === 0 && tilt.y === 0
 
@@ -292,7 +299,7 @@ export default function Pricing() {
                     value={customText}
                     onChange={e => setCustomText(e.target.value)}
                     placeholder="T.ex. BEAST MODE"
-                    maxLength={28}
+                    maxLength={14}
                     className="w-full bg-[#070a14] border border-white/10 focus:border-blue-500/50 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-colors duration-200"
                   />
                   <div className="flex items-center gap-3 mt-3">
@@ -314,7 +321,7 @@ export default function Pricing() {
                     </div>
                     <span className="text-white/70 text-xs">{TEXT_COLORS[textColorIdx].name}</span>
                   </div>
-                  <p className="text-white/60 text-xs mt-2">{customText.length}/28 tecken</p>
+                  <p className="text-white/60 text-xs mt-2">{customText.length}/14 tecken</p>
                 </div>
               </div>
             </div>
@@ -335,7 +342,7 @@ export default function Pricing() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-indigo-400 text-sm">+{hasText ? 20 : 10} kr</span>
+                  <span className="text-indigo-400 text-sm">+{hasText ? 30 : 10} kr</span>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasImage ? 'bg-indigo-600 border-indigo-600' : 'border-white/25'}`}>
                     {hasImage && <Check size={13} className="text-white" strokeWidth={2.5} />}
                   </div>
@@ -381,9 +388,9 @@ export default function Pricing() {
                 </div>
                 <p className="text-white/60 text-xs mt-1">
                   {!hasImage && !hasText && 'Baspris, lägg till bild för +10 kr'}
-                  {!hasImage &&  hasText && 'Med text (ingår i priset)'}
-                  {hasImage  && !hasText && 'Med bild, +10 kr extra'}
-                  {hasImage  &&  hasText && 'Med text och bild, +20 kr extra'}
+                  {!hasImage &&  hasText && 'Med text (120 kr)'}
+                  {hasImage  && !hasText && 'Med bild (130 kr)'}
+                  {hasImage  &&  hasText && 'Med text och bild (150 kr)'}
                 </p>
               </div>
 
