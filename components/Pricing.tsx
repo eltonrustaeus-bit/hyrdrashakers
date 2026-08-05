@@ -191,7 +191,7 @@ export default function Pricing() {
                         className="font-black text-center leading-tight tracking-widest block w-full"
                         style={{
                           color: TEXT_COLORS[textColorIdx].value,
-                          fontSize: labelText.length > 14 ? '12px' : labelText.length > 9 ? '18px' : '26px',
+                          fontSize: labelText.length > 9 ? '18px' : '26px',
                           textShadow: TEXT_COLORS[textColorIdx].shadow,
                           WebkitTextStroke: TEXT_COLORS[textColorIdx].stroke,
                           whiteSpace: 'nowrap',

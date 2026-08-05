@@ -30,7 +30,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-white/65 text-sm leading-relaxed mb-4">
-              Vi skapar personliga vattenflaskor för seriösa gymmare. Välj din variant, lägg till text eller bild — och gör flaskan till din.
+              Vi skapar personliga vattenflaskor för seriösa gymmare. Välj din variant, lägg till text eller bild och gör flaskan till din.
             </p>
             <p className="text-white/45 text-sm leading-relaxed">
               Baserade i Sverige. Beställning sker direkt via Instagram DM.
@@ -93,7 +93,7 @@ export default function Footer() {
                   <TikTokIcon size={16} />
                 </div>
                 <div>
-                  <p className="text-white text-sm font-medium group-hover:text-gray-300 transition-colors duration-200">@hydrashakers</p>
+                  <p className="text-white text-sm font-medium group-hover:text-white/70 transition-colors duration-200">@hydrashakers</p>
                   <p className="text-white/45 text-xs">Följ oss på TikTok</p>
                 </div>
               </a>

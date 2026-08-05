@@ -53,7 +53,7 @@ export default function HowItWorks() {
               fungerar
             </span>
           </h2>
-          <p className="text-blue-100/70 text-lg max-w-2xl mx-auto">
+          <p className="text-white/80 text-lg max-w-2xl mx-auto">
             Tre enkla steg för att få din drömflaska. Det har aldrig varit enklare.
           </p>
         </div>
