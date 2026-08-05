@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Bebas_Neue } from 'next/font/google'
+import { Inter, Bebas_Neue, Anton, Pacifico } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({
@@ -12,6 +12,21 @@ const bebasNeue = Bebas_Neue({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-bebas',
+  display: 'swap',
+})
+
+// Print typefaces offered in the bottle configurator.
+const anton = Anton({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-anton',
+  display: 'swap',
+})
+
+const pacifico = Pacifico({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-pacifico',
   display: 'swap',
 })
 
@@ -36,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="sv" className={`${inter.variable} ${bebasNeue.variable}`}>
+    <html lang="sv" className={`${inter.variable} ${bebasNeue.variable} ${anton.variable} ${pacifico.variable}`}>
       <body className={`${inter.className} antialiased`}>
         {children}
       </body>
