@@ -11,8 +11,6 @@ import {
 const VARIANTS = [
   { id: 'vit',   name: 'Vit',   photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true,
     chip: 'linear-gradient(145deg,#ffffff 0%,#e6ebf2 100%)' },
-  { id: 'klar',  name: 'Klar',  photo: '/shaker-clear-cut.png', glow: 'rgba(226,232,240,0.18)', light: true,
-    chip: 'linear-gradient(145deg,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0.10) 45%,rgba(255,255,255,0.45) 100%)' },
   { id: 'svart', name: 'Svart', photo: '/shaker-black-cut.png', glow: 'rgba(59,130,246,0.24)',  light: false,
     chip: 'linear-gradient(145deg,#2b2f36 0%,#0b0d11 100%)' },
 ]
@@ -408,7 +406,7 @@ export default function Pricing() {
           {/* ── Preview stage (pinned) ── */}
           <div className="sticky top-16 lg:top-24 z-20 -mx-4 px-4 pt-2 pb-3 bg-[#060810] lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent">
             <div
-              className="relative rounded-[2rem] px-6 py-5 sm:py-8 sm:px-8"
+              className="relative rounded-2xl sm:rounded-[2rem] px-4 py-4 sm:py-8 sm:px-8"
               style={{
                 background: 'linear-gradient(165deg, rgba(17,28,64,0.85) 0%, rgba(5,8,20,0.95) 60%, rgba(3,5,12,0.98) 100%)',
                 border: '1px solid rgba(59,130,246,0.28)',
@@ -426,7 +424,7 @@ export default function Pricing() {
                 'bottom-3 left-3 border-b-2 border-l-2 rounded-bl-xl',
                 'bottom-3 right-3 border-b-2 border-r-2 rounded-br-xl',
               ].map(cls => (
-                <div key={cls} className={`absolute w-5 h-5 border-blue-400/35 pointer-events-none ${cls}`} />
+                <div key={cls} className={`hidden sm:block absolute w-5 h-5 border-blue-400/35 pointer-events-none ${cls}`} />
               ))}
 
               <div className="relative flex flex-col items-center">
@@ -437,7 +435,7 @@ export default function Pricing() {
                   onPointerUp={releaseTilt}
                   onPointerCancel={releaseTilt}
                   onPointerLeave={releaseTilt}
-                  className="relative h-[240px] sm:h-[340px] lg:h-[500px] aspect-[487/900] select-none touch-pan-y"
+                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[487/900] select-none touch-pan-y"
                   style={{ cursor: 'grab' }}
                 >
                   {/* Ambient halo */}
@@ -495,23 +493,9 @@ export default function Pricing() {
                   />
                 </div>
 
-                <p className="mt-4 sm:mt-6 text-white/45 text-[11px] tracking-wide">
+                <p className="mt-3 sm:mt-6 text-white/45 text-[11px] tracking-wide">
                   Dra för att vrida flaskan
                 </p>
-              </div>
-
-              {/* Trust row — stays with the pinned preview */}
-              <div className="relative mt-5 grid grid-cols-3 gap-2">
-                {[
-                  { icon: ShieldCheck, label: 'BPA-fri' },
-                  { icon: Truck,       label: 'Skickas i Sverige' },
-                  { icon: Sparkles,    label: 'Handgjord design' },
-                ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex flex-col items-center gap-1 rounded-xl bg-white/[0.04] border border-white/10 px-2 py-2 sm:py-3 text-center">
-                    <Icon size={15} className="text-blue-400" />
-                    <span className="text-white/75 text-[10px] sm:text-[11px] leading-tight">{label}</span>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
@@ -536,7 +520,7 @@ export default function Pricing() {
                   </button>
                 )}
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {VARIANTS.map((v, i) => (
                   <button
                     key={v.id}
@@ -600,7 +584,10 @@ export default function Pricing() {
                       onChange={e => setCustomText(e.target.value)}
                       placeholder="T.ex. BEAST MODE"
                       maxLength={MAX_CHARS}
-                      className="w-full bg-[#070a14] border border-white/10 focus:border-blue-500/60 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm outline-none transition-colors duration-200"
+                      autoCapitalize="characters"
+                      autoComplete="off"
+                      /* 16px on small screens or iOS Safari zooms in on focus. */
+                      className="w-full bg-[#070a14] border border-white/10 focus:border-blue-500/60 rounded-xl px-4 py-3 text-white placeholder-white/25 text-base sm:text-sm outline-none transition-colors duration-200"
                     />
                     <p className="text-white/50 text-xs mt-1.5 text-right tabular-nums">
                       {customText.length}/{MAX_CHARS} tecken
@@ -637,20 +624,26 @@ export default function Pricing() {
                   {/* Colour */}
                   <div className="flex items-center gap-3 flex-wrap">
                     <p className="text-white/70 text-xs uppercase tracking-widest">Färg</p>
-                    <div className="flex gap-2">
+                    {/* Swatches are 28px but the button pads the hit area out to
+                        44px so they stay tappable on a phone. */}
+                    <div className="flex -m-2">
                       {TEXT_COLORS.map((c, i) => (
                         <button
                           key={c.id}
                           onClick={() => setTextColorIdx(i)}
                           aria-label={`Textfärg ${c.name}`}
                           aria-pressed={textColorIdx === i}
-                          className="w-7 h-7 rounded-full border-2 transition-transform duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                          style={{
-                            background: c.swatch,
-                            borderColor: textColorIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.22)',
-                            boxShadow: textColorIdx === i ? '0 0 0 2px rgba(96,165,250,0.5)' : undefined,
-                          }}
-                        />
+                          className="p-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                        >
+                          <span
+                            className="block w-7 h-7 rounded-full border-2 transition-transform duration-150 hover:scale-110"
+                            style={{
+                              background: c.swatch,
+                              borderColor: textColorIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.22)',
+                              boxShadow: textColorIdx === i ? '0 0 0 2px rgba(96,165,250,0.5)' : undefined,
+                            }}
+                          />
+                        </button>
                       ))}
                     </div>
                     <span className="text-white/70 text-xs">{color.name}</span>
@@ -849,7 +842,25 @@ export default function Pricing() {
                 och bifoga din bild. Vi återkommer med bekräftelse och leveranstid.
                 Betalning sker via Swish.
               </p>
+
+              {/* Trust row sits with the CTA rather than the preview, which keeps
+                  the pinned preview short enough to be useful on a phone. */}
+              <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-white/10">
+                {[
+                  { icon: ShieldCheck, label: 'BPA-fri' },
+                  { icon: Truck,       label: 'Skickas i Sverige' },
+                  { icon: Sparkles,    label: 'Handgjord design' },
+                ].map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex flex-col items-center gap-1.5 text-center">
+                    <Icon size={16} className="text-blue-400" />
+                    <span className="text-white/70 text-[10px] sm:text-[11px] leading-tight">{label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {/* Clearance for the fixed order bar */}
+            <div className="h-20 lg:hidden" aria-hidden="true" />
           </div>
         </div>
       </div>
