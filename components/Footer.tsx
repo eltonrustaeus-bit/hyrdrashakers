@@ -1,5 +1,7 @@
 import { Instagram, Mail, MapPin } from 'lucide-react'
 
+const BUILD_ID = (process.env.VERCEL_GIT_COMMIT_SHA || 'lokal').slice(0, 7)
+
 function TikTokIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -128,6 +130,10 @@ export default function Footer() {
         <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/30 text-xs">
             © 2026 Hydra Shakers. Alla rättigheter förbehållna.
+            {/* Which build is actually live — tells a stale cache from a stale
+                deploy without needing the Vercel dashboard. Vercel leaves the
+                var defined but empty outside git deploys, so || not ??. */}
+            <span className="text-white/20 ml-2">build {BUILD_ID}</span>
           </p>
           <a
             href="https://www.instagram.com/hydrashakers"
