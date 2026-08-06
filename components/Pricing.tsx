@@ -8,11 +8,10 @@ import {
 
 /* ── Product ─────────────────────────────────────────────────────────── */
 
+/* Only the white bottle is sold. Kept as a list so the picker can come back by
+   adding an entry here; the rest of the component is already variant-driven. */
 const VARIANTS = [
-  { id: 'vit',   name: 'Vit',   photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true,
-    chip: 'linear-gradient(145deg,#ffffff 0%,#e6ebf2 100%)' },
-  { id: 'svart', name: 'Svart', photo: '/shaker-black-cut.png', glow: 'rgba(59,130,246,0.24)',  light: false,
-    chip: 'linear-gradient(145deg,#2b2f36 0%,#0b0d11 100%)' },
+  { id: 'vit', name: 'Vit', photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true },
 ]
 
 const TEXT_COLORS = [
@@ -195,7 +194,6 @@ function BottlePrint({
 /* ── Section ─────────────────────────────────────────────────────────── */
 
 export default function Pricing() {
-  const [variantIdx, setVariantIdx]   = useState(0)
   const [hasText, setHasText]         = useState(false)
   const [customText, setCustomText]   = useState('')
   const [fontIdx, setFontIdx]         = useState(1)
@@ -211,7 +209,7 @@ export default function Pricing() {
   const sectionRef = useRef<HTMLElement>(null)
   const summaryRef = useRef<HTMLDivElement>(null)
 
-  const variant = VARIANTS[variantIdx]
+  const variant = VARIANTS[0]
   const font    = FONTS[fontIdx]
   const color   = TEXT_COLORS[textColorIdx]
 
@@ -326,7 +324,7 @@ export default function Pricing() {
   /* ── Copy helpers ── */
   const orderSummary = useMemo(() => {
     const rows = [
-      `Flaska: ${variant.name}`,
+      `Flaska: Perfect Shaker Activ 800 ml – ${variant.name}`,
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
       hasText && labelText ? `Typsnitt: ${font.name}` : null,
       hasText && labelText ? `Textfärg: ${color.name}` : null,
@@ -348,7 +346,6 @@ export default function Pricing() {
   }, [])
 
   const reset = useCallback(() => {
-    setVariantIdx(0)
     setHasText(false)
     setCustomText('')
     setFontIdx(1)
@@ -360,7 +357,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    variantIdx !== 0 || hasText || hasImage || customText !== '' || !vertical
+    hasText || hasImage || customText !== '' || !vertical
 
   return (
     <section
@@ -395,7 +392,7 @@ export default function Pricing() {
             </span>
           </h2>
           <p className="text-white/80 text-lg max-w-lg mx-auto">
-            Välj flaska, lägg till text och din egen bild. Du ser resultatet direkt.
+            Lägg till din text och din egen bild. Du ser resultatet direkt.
           </p>
         </div>
 
@@ -503,51 +500,19 @@ export default function Pricing() {
           {/* ── Configurator ── */}
           <div className="space-y-4 mt-6 lg:mt-0">
 
-            {/* Step 1 — bottle */}
-            <div className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
-                  <p className="text-white font-semibold">Välj flaska</p>
-                </div>
-                {hasChanges && (
-                  <button
-                    onClick={reset}
-                    className="flex items-center gap-1.5 text-white/55 hover:text-white text-xs transition-colors rounded-lg px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                  >
-                    <RotateCcw size={13} />
-                    Nollställ
-                  </button>
-                )}
+            {hasChanges && (
+              <div className="flex justify-end">
+                <button
+                  onClick={reset}
+                  className="flex items-center gap-1.5 text-white/55 hover:text-white text-xs transition-colors rounded-lg px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                >
+                  <RotateCcw size={13} />
+                  Nollställ
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {VARIANTS.map((v, i) => (
-                  <button
-                    key={v.id}
-                    onClick={() => setVariantIdx(i)}
-                    aria-pressed={variantIdx === i}
-                    className={`group rounded-xl border px-3 py-3 flex flex-col items-center gap-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
-                      variantIdx === i
-                        ? 'border-blue-500 bg-blue-500/10'
-                        : 'border-white/10 hover:border-white/30 bg-white/[0.02]'
-                    }`}
-                  >
-                    <span
-                      className="w-9 h-9 rounded-full border border-white/25 transition-transform duration-200 group-hover:scale-110"
-                      style={{
-                        background: v.chip,
-                        boxShadow: variantIdx === i ? '0 0 0 2px rgba(96,165,250,0.85)' : undefined,
-                      }}
-                    />
-                    <span className={`text-xs ${variantIdx === i ? 'text-white font-semibold' : 'text-white/60'}`}>
-                      {v.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
 
-            {/* Step 2 — text */}
+            {/* Step 1 — text */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasText ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -556,7 +521,7 @@ export default function Pricing() {
                 aria-expanded={hasText}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasText ? 'bg-blue-600' : 'bg-white/[0.07]'}`}>
                     <Type size={20} className="text-white" />
                   </div>
@@ -684,7 +649,7 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 3 — artwork */}
+            {/* Step 2 — artwork */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasImage ? 'border-indigo-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -693,7 +658,7 @@ export default function Pricing() {
                 aria-expanded={hasImage}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasImage ? 'bg-indigo-600' : 'bg-white/[0.07]'}`}>
                     <ImageIcon size={20} className="text-white" />
                   </div>
@@ -765,10 +730,10 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 4 — summary */}
+            {/* Step 3 — summary */}
             <div ref={summaryRef} className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                 <p className="text-white font-semibold">Din beställning</p>
               </div>
 
@@ -879,7 +844,9 @@ export default function Pricing() {
             <p className="text-white text-xl font-black tabular-nums leading-none">
               {price} <span className="text-blue-300 text-sm font-semibold">kr</span>
             </p>
-            <p className="text-white/50 text-[10px] mt-0.5">{variant.name}{hasText && ' · text'}{hasImage && ' · bild'}</p>
+            <p className="text-white/50 text-[10px] mt-0.5">
+              {[hasText && 'text', hasImage && 'bild'].filter(Boolean).join(' · ') || 'utan tryck'}
+            </p>
           </div>
           <a
             href="https://www.instagram.com/hydrashakers"
