@@ -21,24 +21,25 @@ const TEXT_COLORS = [
   { id: 'rod',   name: 'Röd',   swatch: '#ef4444', value: '#e02424' },
 ]
 
-/* `factor` is only the first-paint estimate of average glyph advance; the real
-   width is measured off the rendered glyphs so no font can overflow the print. */
-const FONTS = [
-  { id: 'sport',  name: 'Sport',  css: 'var(--font-bebas), Impact, sans-serif',   factor: 0.44, spacing: 0.06, weight: 400, upper: true  },
-  { id: 'impact', name: 'Impact', css: 'var(--font-anton), Impact, sans-serif',   factor: 0.52, spacing: 0.02, weight: 400, upper: true  },
-  { id: 'modern', name: 'Modern', css: 'var(--font-inter), Arial, sans-serif',    factor: 0.68, spacing: 0.03, weight: 900, upper: true  },
-  { id: 'script', name: 'Script', css: 'var(--font-pacifico), cursive',           factor: 0.72, spacing: 0.00, weight: 400, upper: false },
-]
+/* One typeface, so every order prints the same way. `factor` is only the
+   first-paint estimate of average glyph advance; the real width is measured off
+   the rendered glyphs so the text can never overflow the print area. */
+const PRINT_FONT = {
+  id: 'impact', name: 'Impact', css: 'var(--font-anton), Impact, sans-serif',
+  factor: 0.52, spacing: 0.02, weight: 400, upper: true,
+}
 
 const MAX_CHARS = 14
 const MAX_UPLOAD_MB = 8
+/* Artwork is scaled to fit the print, so it has to start out big enough. */
+const MIN_ARTWORK_PX = 3000
 
 /* Print area as a share of the bottle image box, measured off the cutouts:
    the body runs x 26–90 % and y 24–100 %, so this sits on the flat front face. */
 const PRINT = { left: 39, top: 31, width: 38, height: 56 }
-/* viewBox matched to the print box's rendered aspect (bottle PNG is 487×900). */
+/* viewBox matched to the print box's rendered aspect (bottle PNG is 541×1003). */
 const VB_W = 100
-const VB_H = 272
+const VB_H = 273
 const UID = 'hs-print'
 
 /* ── Live print rendering ────────────────────────────────────────────── */
@@ -49,7 +50,7 @@ function BottlePrint({
   text, font, color, vertical, artwork, light, fontEpoch,
 }: {
   text: string
-  font: typeof FONTS[number]
+  font: typeof PRINT_FONT
   color: string
   vertical: boolean
   artwork: string | null
@@ -196,11 +197,10 @@ function BottlePrint({
 export default function Pricing() {
   const [hasText, setHasText]         = useState(false)
   const [customText, setCustomText]   = useState('')
-  const [fontIdx, setFontIdx]         = useState(1)
-  const [textColorIdx, setTextColorIdx] = useState(1)
+    const [textColorIdx, setTextColorIdx] = useState(1)
   const [vertical, setVertical]       = useState(true)
   const [hasImage, setHasImage]       = useState(false)
-  const [artwork, setArtwork]         = useState<{ url: string; name: string } | null>(null)
+  const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
   const [uploadError, setUploadError] = useState('')
   const [copied, setCopied]           = useState<'email' | 'order' | null>(null)
 
@@ -210,12 +210,17 @@ export default function Pricing() {
   const summaryRef = useRef<HTMLDivElement>(null)
 
   const variant = VARIANTS[0]
-  const font    = FONTS[fontIdx]
+  const font    = PRINT_FONT
   const color   = TEXT_COLORS[textColorIdx]
 
   const labelText = hasText ? customText.trim() : ''
   const printArt  = hasImage && artwork ? artwork.url : null
   const price     = hasText && hasImage ? 150 : hasImage ? 130 : 120
+
+  /* Vector art has no fixed pixel size, so only raster uploads get flagged. */
+  const artworkTooSmall = Boolean(
+    artwork && artwork.w > 0 && (artwork.w < MIN_ARTWORK_PX || artwork.h < MIN_ARTWORK_PX),
+  )
 
   /* White ink on a white bottle (or black on black) will not show up. */
   const lowContrast =
@@ -253,8 +258,18 @@ export default function Pricing() {
       return
     }
     setUploadError('')
-    setArtwork({ url: URL.createObjectURL(file), name: file.name })
-    setHasImage(true)
+    const url = URL.createObjectURL(file)
+    // Read the true pixel size so we can flag artwork that is too small to print.
+    const probe = new window.Image()
+    probe.onload = () => {
+      setArtwork({ url, name: file.name, w: probe.naturalWidth, h: probe.naturalHeight })
+      setHasImage(true)
+    }
+    probe.onerror = () => {
+      setArtwork({ url, name: file.name, w: 0, h: 0 })
+      setHasImage(true)
+    }
+    probe.src = url
   }, [])
 
   const removeArtwork = useCallback(() => {
@@ -326,7 +341,6 @@ export default function Pricing() {
     const rows = [
       `Flaska: Perfect Shaker Activ 800 ml – ${variant.name}`,
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
-      hasText && labelText ? `Typsnitt: ${font.name}` : null,
       hasText && labelText ? `Textfärg: ${color.name}` : null,
       hasText && labelText ? `Placering: ${vertical ? 'Vertikal' : 'Horisontell'}` : null,
       hasImage ? `Bild: Ja${artwork ? ` (${artwork.name})` : ''} – skickas med` : 'Bild: —',
@@ -348,7 +362,6 @@ export default function Pricing() {
   const reset = useCallback(() => {
     setHasText(false)
     setCustomText('')
-    setFontIdx(1)
     setTextColorIdx(1)
     setVertical(true)
     setHasImage(false)
@@ -432,7 +445,7 @@ export default function Pricing() {
                   onPointerUp={releaseTilt}
                   onPointerCancel={releaseTilt}
                   onPointerLeave={releaseTilt}
-                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[487/900] select-none touch-pan-y"
+                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[541/1003] select-none touch-pan-y"
                   style={{ cursor: 'grab' }}
                 >
                   {/* Ambient halo */}
@@ -559,33 +572,6 @@ export default function Pricing() {
                     </p>
                   </div>
 
-                  {/* Typeface */}
-                  <div>
-                    <p className="text-white/70 text-xs uppercase tracking-widest mb-2">Typsnitt</p>
-                    <div className="grid grid-cols-4 gap-2">
-                      {FONTS.map((f, i) => (
-                        <button
-                          key={f.id}
-                          onClick={() => setFontIdx(i)}
-                          aria-pressed={fontIdx === i}
-                          className={`rounded-xl border py-2.5 px-1 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
-                            fontIdx === i ? 'border-blue-500 bg-blue-500/10' : 'border-white/10 hover:border-white/30'
-                          }`}
-                        >
-                          <span
-                            className="block text-white text-lg leading-none"
-                            style={{ fontFamily: f.css, fontWeight: f.weight }}
-                          >
-                            {f.upper ? 'Ag' : 'Ag'}
-                          </span>
-                          <span className={`block text-[10px] mt-1.5 ${fontIdx === i ? 'text-blue-200' : 'text-white/50'}`}>
-                            {f.name}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Colour — every option is named, so the full set of choices
                       reads as a set rather than four unlabelled dots. */}
                   <div>
@@ -694,7 +680,14 @@ export default function Pricing() {
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-white text-sm truncate">{artwork.name}</p>
-                        <p className="text-emerald-400 text-xs mt-0.5">Visas på flaskan till vänster</p>
+                        {artwork.w > 0 ? (
+                          <p className={`text-xs mt-0.5 ${artworkTooSmall ? 'text-amber-300' : 'text-emerald-400'}`}>
+                            {artwork.w} × {artwork.h} px
+                            {artworkTooSmall ? ' — under minimum' : ' — bra upplösning'}
+                          </p>
+                        ) : (
+                          <p className="text-emerald-400 text-xs mt-0.5">Visas på flaskan ovan</p>
+                        )}
                       </div>
                       <button
                         onClick={removeArtwork}
@@ -712,6 +705,7 @@ export default function Pricing() {
                       <Upload size={20} className="text-indigo-300" />
                       <span className="text-white text-sm font-medium">Ladda upp din bild</span>
                       <span className="text-white/50 text-xs">JPG, PNG eller SVG · max {MAX_UPLOAD_MB} MB</span>
+                      <span className="text-white/40 text-xs">Minst {MIN_ARTWORK_PX} × {MIN_ARTWORK_PX} px</span>
                     </button>
                   )}
 
@@ -722,6 +716,18 @@ export default function Pricing() {
                     </p>
                   )}
 
+                  {artworkTooSmall && (
+                    <p className="flex items-start gap-2 text-amber-300/90 text-xs bg-amber-500/10 border border-amber-500/25 rounded-xl px-3 py-2.5">
+                      <AlertTriangle size={14} className="flex-shrink-0 mt-px" />
+                      Bilden är {artwork!.w} × {artwork!.h} px. Under {MIN_ARTWORK_PX} × {MIN_ARTWORK_PX} px
+                      kan trycket bli suddigt. Skicka gärna en större fil.
+                    </p>
+                  )}
+
+                  <p className="text-white/55 text-xs leading-relaxed">
+                    Bilden anpassas till rätt storlek av oss. Minsta upplösning är{' '}
+                    <span className="text-white/80 font-medium">{MIN_ARTWORK_PX} × {MIN_ARTWORK_PX} pixlar</span>.
+                  </p>
                   <p className="text-white/55 text-xs leading-relaxed">
                     Förhandsvisningen sker i din webbläsare — bilden laddas inte upp någonstans.
                     Skicka originalfilen till oss via Instagram DM eller mejl när du beställer.
@@ -741,7 +747,7 @@ export default function Pricing() {
                 {[
                   { label: `Perfect Shaker Activ 800 ml – ${variant.name}`, show: true },
                   { label: 'BPA-fri & läcksäker design', show: true },
-                  { label: labelText ? `Text: “${labelText}” · ${font.name} · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
+                  { label: labelText ? `Text: “${labelText}” · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
                   { label: artwork ? `Bild: ${artwork.name}` : 'Bild/logga', show: hasImage },
                   { label: 'Hög tryckkvalitet', show: hasImage },
                 ].filter(i => i.show).map(item => (
