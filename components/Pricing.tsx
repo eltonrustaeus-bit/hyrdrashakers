@@ -621,32 +621,35 @@ export default function Pricing() {
                     </div>
                   </div>
 
-                  {/* Colour */}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <p className="text-white/70 text-xs uppercase tracking-widest">Färg</p>
-                    {/* Swatches are 28px but the button pads the hit area out to
-                        44px so they stay tappable on a phone. */}
-                    <div className="flex -m-2">
+                  {/* Colour — every option is named, so the full set of choices
+                      reads as a set rather than four unlabelled dots. */}
+                  <div>
+                    <p className="text-white/70 text-xs uppercase tracking-widest mb-2">Textfärg</p>
+                    <div className="grid grid-cols-4 gap-2">
                       {TEXT_COLORS.map((c, i) => (
                         <button
                           key={c.id}
                           onClick={() => setTextColorIdx(i)}
                           aria-label={`Textfärg ${c.name}`}
                           aria-pressed={textColorIdx === i}
-                          className="p-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                          className={`rounded-xl border py-2.5 flex flex-col items-center gap-1.5 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                            textColorIdx === i ? 'border-blue-500 bg-blue-500/10' : 'border-white/10 hover:border-white/30'
+                          }`}
                         >
                           <span
-                            className="block w-7 h-7 rounded-full border-2 transition-transform duration-150 hover:scale-110"
+                            className="block w-6 h-6 rounded-full border"
                             style={{
                               background: c.swatch,
-                              borderColor: textColorIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.22)',
-                              boxShadow: textColorIdx === i ? '0 0 0 2px rgba(96,165,250,0.5)' : undefined,
+                              borderColor: 'rgba(255,255,255,0.3)',
+                              boxShadow: textColorIdx === i ? '0 0 0 2px rgba(96,165,250,0.6)' : undefined,
                             }}
                           />
+                          <span className={`text-[11px] leading-none ${textColorIdx === i ? 'text-blue-200 font-semibold' : 'text-white/60'}`}>
+                            {c.name}
+                          </span>
                         </button>
                       ))}
                     </div>
-                    <span className="text-white/70 text-xs">{color.name}</span>
                   </div>
 
                   {/* Placement */}
