@@ -8,10 +8,11 @@ import {
 
 /* ── Product ─────────────────────────────────────────────────────────── */
 
-/* Only the white bottle is sold. Kept as a list so the picker can come back by
-   adding an entry here; the rest of the component is already variant-driven. */
 const VARIANTS = [
-  { id: 'vit', name: 'Vit', photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true },
+  { id: 'vit',   name: 'Vit',   photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true,
+    chip: 'linear-gradient(145deg,#ffffff 0%,#e6ebf2 100%)' },
+  { id: 'svart', name: 'Svart', photo: '/shaker-black-cut.png', glow: 'rgba(59,130,246,0.24)',  light: false,
+    chip: 'linear-gradient(145deg,#2b2f36 0%,#0b0d11 100%)' },
 ]
 
 const TEXT_COLORS = [
@@ -195,9 +196,10 @@ function BottlePrint({
 /* ── Section ─────────────────────────────────────────────────────────── */
 
 export default function Pricing() {
+  const [variantIdx, setVariantIdx]   = useState(0)
   const [hasText, setHasText]         = useState(false)
   const [customText, setCustomText]   = useState('')
-    const [textColorIdx, setTextColorIdx] = useState(1)
+  const [textColorIdx, setTextColorIdx] = useState(1)
   const [vertical, setVertical]       = useState(true)
   const [hasImage, setHasImage]       = useState(false)
   const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
@@ -209,7 +211,7 @@ export default function Pricing() {
   const sectionRef = useRef<HTMLElement>(null)
   const summaryRef = useRef<HTMLDivElement>(null)
 
-  const variant = VARIANTS[0]
+  const variant = VARIANTS[variantIdx]
   const font    = PRINT_FONT
   const color   = TEXT_COLORS[textColorIdx]
 
@@ -347,7 +349,7 @@ export default function Pricing() {
       `Totalt: ${price} kr inkl. moms`,
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
-  }, [variant, hasText, labelText, font, color, vertical, hasImage, artwork, price])
+  }, [variant, hasText, labelText, color, vertical, hasImage, artwork, price])
 
   const copy = useCallback((value: string, kind: 'email' | 'order') => {
     navigator.clipboard.writeText(value).then(
@@ -360,6 +362,7 @@ export default function Pricing() {
   }, [])
 
   const reset = useCallback(() => {
+    setVariantIdx(0)
     setHasText(false)
     setCustomText('')
     setTextColorIdx(1)
@@ -370,7 +373,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    hasText || hasImage || customText !== '' || !vertical
+    variantIdx !== 0 || hasText || hasImage || customText !== '' || !vertical
 
   return (
     <section
@@ -405,16 +408,20 @@ export default function Pricing() {
             </span>
           </h2>
           <p className="text-white/80 text-lg max-w-lg mx-auto">
-            Lägg till din text och din egen bild. Du ser resultatet direkt.
+            Välj flaska, lägg till text och din egen bild. Du ser resultatet direkt.
+          </p>
+          <p className="text-white/45 text-xs max-w-md mx-auto mt-3">
+            Inget rasistiskt, sexistiskt eller homofobiskt får designas. Sådana beställningar nekas.
           </p>
         </div>
 
-        {/* Block flow on mobile so the pinned preview stays put while the steps
-            below it scroll; a two-column grid from lg up. */}
+        {/* Plain block flow on mobile; two-column grid from lg up. The preview
+            is not pinned — it scrolls with the rest of the page like any other
+            block, on both mobile and desktop. */}
         <div className="lg:grid lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-14 lg:items-start">
 
-          {/* ── Preview stage (pinned) ── */}
-          <div className="sticky top-16 lg:top-24 z-20 -mx-4 px-4 pt-2 pb-3 bg-[#060810] lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent">
+          {/* ── Preview stage ── */}
+          <div>
             <div
               className="relative rounded-2xl sm:rounded-[2rem] px-4 py-4 sm:py-8 sm:px-8"
               style={{
@@ -513,19 +520,51 @@ export default function Pricing() {
           {/* ── Configurator ── */}
           <div className="space-y-4 mt-6 lg:mt-0">
 
-            {hasChanges && (
-              <div className="flex justify-end">
-                <button
-                  onClick={reset}
-                  className="flex items-center gap-1.5 text-white/55 hover:text-white text-xs transition-colors rounded-lg px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                >
-                  <RotateCcw size={13} />
-                  Nollställ
-                </button>
+            {/* Step 1 — bottle */}
+            <div className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                  <p className="text-white font-semibold">Välj flaska</p>
+                </div>
+                {hasChanges && (
+                  <button
+                    onClick={reset}
+                    className="flex items-center gap-1.5 text-white/55 hover:text-white text-xs transition-colors rounded-lg px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                  >
+                    <RotateCcw size={13} />
+                    Nollställ
+                  </button>
+                )}
               </div>
-            )}
+              <div className="grid grid-cols-2 gap-3">
+                {VARIANTS.map((v, i) => (
+                  <button
+                    key={v.id}
+                    onClick={() => setVariantIdx(i)}
+                    aria-pressed={variantIdx === i}
+                    className={`group rounded-xl border px-3 py-3 flex flex-col items-center gap-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                      variantIdx === i
+                        ? 'border-blue-500 bg-blue-500/10'
+                        : 'border-white/10 hover:border-white/30 bg-white/[0.02]'
+                    }`}
+                  >
+                    <span
+                      className="w-9 h-9 rounded-full border border-white/25 transition-transform duration-200 group-hover:scale-110"
+                      style={{
+                        background: v.chip,
+                        boxShadow: variantIdx === i ? '0 0 0 2px rgba(96,165,250,0.85)' : undefined,
+                      }}
+                    />
+                    <span className={`text-xs ${variantIdx === i ? 'text-white font-semibold' : 'text-white/60'}`}>
+                      {v.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            {/* Step 1 — text */}
+            {/* Step 2 — text */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasText ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -534,7 +573,7 @@ export default function Pricing() {
                 aria-expanded={hasText}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasText ? 'bg-blue-600' : 'bg-white/[0.07]'}`}>
                     <Type size={20} className="text-white" />
                   </div>
@@ -635,7 +674,7 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 2 — artwork */}
+            {/* Step 3 — artwork */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasImage ? 'border-indigo-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -644,7 +683,7 @@ export default function Pricing() {
                 aria-expanded={hasImage}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasImage ? 'bg-indigo-600' : 'bg-white/[0.07]'}`}>
                     <ImageIcon size={20} className="text-white" />
                   </div>
@@ -736,10 +775,10 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 3 — summary */}
+            {/* Step 4 — summary */}
             <div ref={summaryRef} className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
                 <p className="text-white font-semibold">Din beställning</p>
               </div>
 
