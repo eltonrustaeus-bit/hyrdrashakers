@@ -48,7 +48,7 @@ const UID = 'hs-print'
 const PROBE = 100
 
 function BottlePrint({
-  text, font, color, vertical, artwork, light, fontEpoch,
+  text, font, color, vertical, artwork, light, fontEpoch, artScale, artRotation,
 }: {
   text: string
   font: typeof PRINT_FONT
@@ -57,6 +57,8 @@ function BottlePrint({
   artwork: string | null
   light: boolean
   fontEpoch: number
+  artScale: number
+  artRotation: number
 }) {
   /* The printable face is FACE wide and LEN tall on screen in both modes.
      Artwork always stacks above the text along the bottle's length; only the
@@ -156,15 +158,20 @@ function BottlePrint({
         <g mask={`url(#${UID}-my)`}>
           <g transform={`translate(${VB_W / 2} ${VB_H / 2}) rotate(${vertical ? -90 : 0})`}>
             {artwork && (
-              <image
-                href={artwork}
-                x={artXY.x - artSize / 2}
-                y={artXY.y - artSize / 2}
-                width={artSize}
-                height={artSize}
-                preserveAspectRatio="xMidYMid meet"
-                filter={`url(#${UID}-ink)`}
-              />
+              // Scale/rotate around the artwork's own centre, independent of
+              // the automatic placement math above — this is the user's own
+              // adjustment, layered on top of where the layout put it.
+              <g transform={`translate(${artXY.x} ${artXY.y}) rotate(${artRotation}) scale(${artScale})`}>
+                <image
+                  href={artwork}
+                  x={-artSize / 2}
+                  y={-artSize / 2}
+                  width={artSize}
+                  height={artSize}
+                  preserveAspectRatio="xMidYMid meet"
+                  filter={`url(#${UID}-ink)`}
+                />
+              </g>
             )}
             {display && (
               <text
@@ -203,6 +210,8 @@ export default function Pricing() {
   const [vertical, setVertical]       = useState(true)
   const [hasImage, setHasImage]       = useState(false)
   const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
+  const [artScale, setArtScale]       = useState(1)
+  const [artRotation, setArtRotation] = useState(0)
   const [uploadError, setUploadError] = useState('')
   const [copied, setCopied]           = useState<'email' | 'order' | null>(null)
 
@@ -272,6 +281,10 @@ export default function Pricing() {
       return
     }
     setUploadError('')
+    // A fresh file starts from a clean slate — a scale/rotation dialled in for
+    // the last image would rarely suit a new one's proportions.
+    setArtScale(1)
+    setArtRotation(0)
     const url = URL.createObjectURL(file)
     // Read the true pixel size so we can flag artwork that is too small to print.
     const probe = new window.Image()
@@ -288,6 +301,8 @@ export default function Pricing() {
 
   const removeArtwork = useCallback(() => {
     setArtwork(null)
+    setArtScale(1)
+    setArtRotation(0)
     setUploadError('')
   }, [])
 
@@ -358,7 +373,8 @@ export default function Pricing() {
       hasText && labelText ? `Textfärg: ${color.name}` : null,
       hasText && labelText ? `Placering: ${vertical ? 'Vertikal' : 'Horisontell'}` : null,
       hasImage ? `Bild: Ja${artwork ? ` (${artwork.name})` : ''} – skickas med` : 'Bild: —',
-      `Totalt: ${price} kr inkl. moms`,
+      `Produkt: ${price} kr inkl. moms`,
+      'Frakt: Betalas separat, pris bestäms vid beställning',
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
   }, [variant, hasText, labelText, color, vertical, hasImage, artwork, price])
@@ -381,6 +397,8 @@ export default function Pricing() {
     setVertical(true)
     setHasImage(false)
     setArtwork(null)
+    setArtScale(1)
+    setArtRotation(0)
     setUploadError('')
   }, [])
 
@@ -510,6 +528,8 @@ export default function Pricing() {
                           artwork={printArt}
                           light={variant.light}
                           fontEpoch={fontEpoch}
+                          artScale={artScale}
+                          artRotation={artRotation}
                         />
                       )}
                     </div>
@@ -773,6 +793,52 @@ export default function Pricing() {
                     </button>
                   )}
 
+                  {artwork && (
+                    <div className="space-y-3 bg-[#070a14] border border-white/10 rounded-xl p-3.5">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <p className="text-white/70 text-xs uppercase tracking-widest">Storlek</p>
+                          <span className="text-white/60 text-xs tabular-nums">{Math.round(artScale * 100)}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={50}
+                          max={180}
+                          step={5}
+                          value={Math.round(artScale * 100)}
+                          onChange={e => setArtScale(Number(e.target.value) / 100)}
+                          aria-label="Bildens storlek"
+                          className="w-full accent-indigo-500"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <p className="text-white/70 text-xs uppercase tracking-widest">Rotation</p>
+                          <span className="text-white/60 text-xs tabular-nums">{artRotation}°</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={-180}
+                          max={180}
+                          step={1}
+                          value={artRotation}
+                          onChange={e => setArtRotation(Number(e.target.value))}
+                          aria-label="Bildens rotation"
+                          className="w-full accent-indigo-500"
+                        />
+                      </div>
+                      {(artScale !== 1 || artRotation !== 0) && (
+                        <button
+                          onClick={() => { setArtScale(1); setArtRotation(0) }}
+                          className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+                        >
+                          <RotateCcw size={12} />
+                          Återställ bildjustering
+                        </button>
+                      )}
+                    </div>
+                  )}
+
                   {uploadError && (
                     <p className="flex items-start gap-2 text-red-300 text-xs bg-red-500/10 border border-red-500/25 rounded-xl px-3 py-2.5">
                       <AlertTriangle size={14} className="flex-shrink-0 mt-px" />
@@ -834,6 +900,9 @@ export default function Pricing() {
                   {!hasText &&  hasImage && 'Bas 120 kr + bild 10 kr.'}
                   {hasText  &&  hasImage && 'Bas 120 kr + text och bild 30 kr.'}
                 </p>
+                <p className="text-white/45 text-xs mt-1.5">
+                  Frakt tillkommer och betalas separat av dig. Fraktpriset bestäms när du lägger din beställning.
+                </p>
               </div>
 
               <div className="flex flex-col gap-3">
@@ -877,7 +946,7 @@ export default function Pricing() {
 
               <p className="text-white/65 text-xs text-center mt-4 leading-relaxed">
                 Kopiera din beställning, klistra in den i ett DM på Instagram eller i ett mejl
-                och bifoga din bild. Vi återkommer med bekräftelse och leveranstid.
+                och bifoga din bild. Vi återkommer med bekräftelse, fraktpris och leveranstid.
                 Betalning sker via Swish.
               </p>
 
