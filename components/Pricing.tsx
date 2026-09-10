@@ -208,6 +208,7 @@ export default function Pricing() {
   const [customText, setCustomText]   = useState('')
   const [textColorIdx, setTextColorIdx] = useState(1)
   const [vertical, setVertical]       = useState(true)
+  const [bothSides, setBothSides]     = useState(false)
   const [hasImage, setHasImage]       = useState(false)
   const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
   const [artScale, setArtScale]       = useState(1)
@@ -226,7 +227,8 @@ export default function Pricing() {
 
   const labelText = hasText ? customText.trim() : ''
   const printArt  = hasImage && artwork ? artwork.url : null
-  const price     = hasText && hasImage ? 150 : hasImage ? 130 : 120
+  const bothSidesCharge = hasText && bothSides
+  const price     = (hasText && hasImage ? 150 : hasImage ? 130 : 120) + (bothSidesCharge ? 15 : 0)
 
   /* Vector art has no fixed pixel size, so only raster uploads get flagged. */
   const artworkTooSmall = Boolean(
@@ -372,12 +374,13 @@ export default function Pricing() {
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
       hasText && labelText ? `Textfärg: ${color.name}` : null,
       hasText && labelText ? `Placering: ${vertical ? 'Vertikal' : 'Horisontell'}` : null,
+      bothSidesCharge ? 'Sidor: Text på både fram- och baksida (+15 kr)' : null,
       hasImage ? `Bild: Ja${artwork ? ` (${artwork.name})` : ''} – skickas med` : 'Bild: —',
       `Produkt: ${price} kr inkl. moms`,
       'Frakt: Betalas separat, pris bestäms vid beställning',
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
-  }, [variant, hasText, labelText, color, vertical, hasImage, artwork, price])
+  }, [variant, hasText, labelText, color, vertical, bothSidesCharge, hasImage, artwork, price])
 
   const copy = useCallback((value: string, kind: 'email' | 'order') => {
     navigator.clipboard.writeText(value).then(
@@ -395,6 +398,7 @@ export default function Pricing() {
     setCustomText('')
     setTextColorIdx(1)
     setVertical(true)
+    setBothSides(false)
     setHasImage(false)
     setArtwork(null)
     setArtScale(1)
@@ -403,7 +407,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    variantIdx !== 0 || hasText || hasImage || customText !== '' || !vertical
+    variantIdx !== 0 || hasText || hasImage || customText !== '' || !vertical || bothSides
 
   return (
     <section
@@ -715,6 +719,33 @@ export default function Pricing() {
                     </div>
                   </div>
 
+                  {/* Both sides — same styling as the step toggles above:
+                      circular checkbox, price badge, no separate switch
+                      component to learn. */}
+                  <button
+                    onClick={() => setBothSides(v => !v)}
+                    aria-pressed={bothSides}
+                    className={`w-full flex items-center justify-between rounded-xl border px-3.5 py-3 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+                      bothSides ? 'border-blue-500/60 bg-blue-500/5' : 'border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <div>
+                      <p className="text-white text-sm font-medium">Text på båda sidor</p>
+                      <p className="text-white/50 text-xs mt-0.5">Samma text trycks på fram- och baksidan</p>
+                    </div>
+                    <div className="flex items-center gap-2.5 flex-shrink-0">
+                      <span className="text-blue-200 text-xs">+15 kr</span>
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${bothSides ? 'bg-blue-600 border-blue-600' : 'border-white/25'}`}>
+                        {bothSides && <Check size={13} className="text-white" strokeWidth={2.5} />}
+                      </span>
+                    </div>
+                  </button>
+                  {bothSides && (
+                    <p className="text-white/45 text-[11px] leading-relaxed">
+                      Förhandsvisningen visar bara framsidan — texten trycks även på baksidan.
+                    </p>
+                  )}
+
                 </div>
               )}
             </div>
@@ -878,6 +909,7 @@ export default function Pricing() {
                   { label: `Perfect Shaker Activ 800 ml – ${variant.name}`, show: true },
                   { label: 'BPA-fri & läcksäker design', show: true },
                   { label: labelText ? `Text: “${labelText}” · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
+                  { label: 'Text på båda sidor', show: bothSidesCharge },
                   { label: artwork ? `Bild: ${artwork.name}` : 'Bild/logga', show: hasImage },
                   { label: 'Hög tryckkvalitet', show: hasImage },
                 ].filter(i => i.show).map(item => (
@@ -900,6 +932,9 @@ export default function Pricing() {
                   {!hasText &&  hasImage && 'Bas 120 kr + bild 10 kr.'}
                   {hasText  &&  hasImage && 'Bas 120 kr + text och bild 30 kr.'}
                 </p>
+                {bothSidesCharge && (
+                  <p className="text-white/60 text-xs mt-0.5">+ text på båda sidor 15 kr.</p>
+                )}
                 <p className="text-white/45 text-xs mt-1.5">
                   Frakt tillkommer och betalas separat av dig. Fraktpriset bestäms när du lägger din beställning.
                 </p>
