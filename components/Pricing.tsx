@@ -209,6 +209,7 @@ export default function Pricing() {
   const [textColorIdx, setTextColorIdx] = useState(1)
   const [vertical, setVertical]       = useState(true)
   const [bothSides, setBothSides]     = useState(false)
+  const [hasBall, setHasBall]         = useState(false)
   const [hasImage, setHasImage]       = useState(false)
   const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
   const [artScale, setArtScale]       = useState(1)
@@ -228,7 +229,7 @@ export default function Pricing() {
   const labelText = hasText ? customText.trim() : ''
   const printArt  = hasImage && artwork ? artwork.url : null
   const bothSidesCharge = hasText && bothSides
-  const price     = (hasText && hasImage ? 150 : hasImage ? 130 : 120) + (bothSidesCharge ? 15 : 0)
+  const price     = (hasText && hasImage ? 150 : hasImage ? 130 : 120) + (bothSidesCharge ? 15 : 0) + (hasBall ? 25 : 0)
 
   /* Vector art has no fixed pixel size, so only raster uploads get flagged. */
   const artworkTooSmall = Boolean(
@@ -371,6 +372,7 @@ export default function Pricing() {
   const orderSummary = useMemo(() => {
     const rows = [
       `Flaska: Perfect Shaker Activ 800 ml – ${variant.name}`,
+      hasBall ? 'Shakerboll: Ja (+25 kr)' : null,
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
       hasText && labelText ? `Textfärg: ${color.name}` : null,
       hasText && labelText ? `Placering: ${vertical ? 'Vertikal' : 'Horisontell'}` : null,
@@ -380,7 +382,7 @@ export default function Pricing() {
       'Frakt: Betalas separat, pris bestäms vid beställning',
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
-  }, [variant, hasText, labelText, color, vertical, bothSidesCharge, hasImage, artwork, price])
+  }, [variant, hasBall, hasText, labelText, color, vertical, bothSidesCharge, hasImage, artwork, price])
 
   const copy = useCallback((value: string, kind: 'email' | 'order') => {
     navigator.clipboard.writeText(value).then(
@@ -394,6 +396,7 @@ export default function Pricing() {
 
   const reset = useCallback(() => {
     setVariantIdx(0)
+    setHasBall(false)
     setHasText(false)
     setCustomText('')
     setTextColorIdx(1)
@@ -407,7 +410,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    variantIdx !== 0 || hasText || hasImage || customText !== '' || !vertical || bothSides
+    variantIdx !== 0 || hasBall || hasText || hasImage || customText !== '' || !vertical || bothSides
 
   return (
     <section
@@ -600,7 +603,36 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Step 2 — text */}
+            {/* Step 2 — shaker ball. A yes/no add-on with nothing further to
+                configure, so no expanding panel — same header row as the
+                other steps, just with a real product photo standing in for
+                the usual icon badge. */}
+            <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasBall ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
+              <button
+                className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
+                onClick={() => setHasBall(v => !v)}
+                aria-pressed={hasBall}
+              >
+                <div className="flex items-center gap-3.5">
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 bg-white/90">
+                    <img src="/shaker-ball.jpg" alt="Shakerboll i rostfritt stål" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold">Shakerboll</p>
+                    <p className="text-white/70 text-xs mt-0.5">Rostfritt stål, blandar pulvret jämnt</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="text-blue-200 text-sm">+25 kr</span>
+                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasBall ? 'bg-blue-600 border-blue-600' : 'border-white/25'}`}>
+                    {hasBall && <Check size={13} className="text-white" strokeWidth={2.5} />}
+                  </span>
+                </div>
+              </button>
+            </div>
+
+            {/* Step 3 — text */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasText ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -609,7 +641,7 @@ export default function Pricing() {
                 aria-expanded={hasText}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasText ? 'bg-blue-600' : 'bg-white/[0.07]'}`}>
                     <Type size={20} className="text-white" />
                   </div>
@@ -750,7 +782,7 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 3 — artwork */}
+            {/* Step 4 — artwork */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasImage ? 'border-indigo-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -759,7 +791,7 @@ export default function Pricing() {
                 aria-expanded={hasImage}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasImage ? 'bg-indigo-600' : 'bg-white/[0.07]'}`}>
                     <ImageIcon size={20} className="text-white" />
                   </div>
@@ -897,10 +929,10 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 4 — summary */}
+            {/* Step 5 — summary */}
             <div ref={summaryRef} className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
                 <p className="text-white font-semibold">Din beställning</p>
               </div>
 
@@ -908,6 +940,7 @@ export default function Pricing() {
                 {[
                   { label: `Perfect Shaker Activ 800 ml – ${variant.name}`, show: true },
                   { label: 'BPA-fri & läcksäker design', show: true },
+                  { label: 'Shakerboll i rostfritt stål', show: hasBall },
                   { label: labelText ? `Text: “${labelText}” · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
                   { label: 'Text på båda sidor', show: bothSidesCharge },
                   { label: artwork ? `Bild: ${artwork.name}` : 'Bild/logga', show: hasImage },
@@ -934,6 +967,9 @@ export default function Pricing() {
                 </p>
                 {bothSidesCharge && (
                   <p className="text-white/60 text-xs mt-0.5">+ text på båda sidor 15 kr.</p>
+                )}
+                {hasBall && (
+                  <p className="text-white/60 text-xs mt-0.5">+ shakerboll 25 kr.</p>
                 )}
                 <p className="text-white/45 text-xs mt-1.5">
                   Frakt tillkommer och betalas separat av dig. Fraktpriset bestäms när du lägger din beställning.
@@ -1019,7 +1055,7 @@ export default function Pricing() {
               {price} <span className="text-blue-300 text-sm font-semibold">kr</span>
             </p>
             <p className="text-white/50 text-[10px] mt-0.5">
-              {[hasText && 'text', hasImage && 'bild'].filter(Boolean).join(' · ') || 'utan tryck'}
+              {[hasText && 'text', hasImage && 'bild', hasBall && 'shakerboll'].filter(Boolean).join(' · ') || 'utan tryck'}
             </p>
           </div>
           <a
