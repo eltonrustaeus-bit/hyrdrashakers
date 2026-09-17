@@ -603,36 +603,7 @@ export default function Pricing() {
               </div>
             </div>
 
-            {/* Step 2 — shaker ball. A yes/no add-on with nothing further to
-                configure, so no expanding panel — same header row as the
-                other steps, just with a real product photo standing in for
-                the usual icon badge. */}
-            <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasBall ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
-              <button
-                className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
-                onClick={() => setHasBall(v => !v)}
-                aria-pressed={hasBall}
-              >
-                <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
-                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 bg-white/90">
-                    <img src="/shaker-ball.jpg" alt="Shakerboll i rostfritt stål" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <p className="text-white font-semibold">Shakerboll</p>
-                    <p className="text-white/70 text-xs mt-0.5">Rostfritt stål, blandar pulvret jämnt</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-blue-200 text-sm">+25 kr</span>
-                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasBall ? 'bg-blue-600 border-blue-600' : 'border-white/25'}`}>
-                    {hasBall && <Check size={13} className="text-white" strokeWidth={2.5} />}
-                  </span>
-                </div>
-              </button>
-            </div>
-
-            {/* Step 3 — text */}
+            {/* Step 2 — text */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasText ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -641,7 +612,7 @@ export default function Pricing() {
                 aria-expanded={hasText}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasText ? 'bg-blue-600' : 'bg-white/[0.07]'}`}>
                     <Type size={20} className="text-white" />
                   </div>
@@ -782,7 +753,7 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 4 — artwork */}
+            {/* Step 3 — artwork */}
             <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasImage ? 'border-indigo-500/60' : 'border-white/10 hover:border-white/20'}`}>
               <button
                 className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
@@ -791,7 +762,7 @@ export default function Pricing() {
                 aria-expanded={hasImage}
               >
                 <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                  <span className="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-200 ${hasImage ? 'bg-indigo-600' : 'bg-white/[0.07]'}`}>
                     <ImageIcon size={20} className="text-white" />
                   </div>
@@ -927,6 +898,35 @@ export default function Pricing() {
                   </p>
                 </div>
               )}
+            </div>
+
+            {/* Step 4 — shaker ball. A yes/no add-on with nothing further to
+                configure, so no expanding panel — same header row as the
+                other steps, just with a real product photo standing in for
+                the usual icon badge. */}
+            <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasBall ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
+              <button
+                className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
+                onClick={() => setHasBall(v => !v)}
+                aria-pressed={hasBall}
+              >
+                <div className="flex items-center gap-3.5">
+                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 bg-white/90">
+                    <img src="/shaker-ball.jpg" alt="Shakerboll i rostfritt stål" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold">Shakerboll</p>
+                    <p className="text-white/70 text-xs mt-0.5">Rostfritt stål, blandar pulvret jämnt</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="text-blue-200 text-sm">+25 kr</span>
+                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasBall ? 'bg-blue-600 border-blue-600' : 'border-white/25'}`}>
+                    {hasBall && <Check size={13} className="text-white" strokeWidth={2.5} />}
+                  </span>
+                </div>
+              </button>
             </div>
 
             {/* Step 5 — summary */}
