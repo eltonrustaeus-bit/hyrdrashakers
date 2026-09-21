@@ -35,16 +35,17 @@ const MAX_UPLOAD_MB = 8
 /* Artwork is scaled to fit the print, so it has to start out big enough. */
 const MIN_ARTWORK_PX = 3000
 
-/* Both bottles now carry a printed STAR NUTRITION logo dead centre on the
-   front (x 24–73 %), so the customer's own print moves to the clear strip on
-   the body's right shoulder instead of overlapping it. Measured off the
-   cutouts: body runs x 9–91 % through the visible height, narrowing to
-   ~85 % right edge at the base, so this stays inside that taper throughout. */
-const PRINT = { left: 74, top: 27, width: 11, height: 60 }
+/* Both bottles carry a printed STAR NUTRITION logo centred on the front
+   (white logo x 37–63 %, gray x 36–67 %), so the customer's own print sits
+   in the clear strip on the body's right shoulder instead of overlapping it.
+   Measured off the cutouts: body right edge runs 74–85 % depending on height
+   and variant, tightest at the base (white, ~74 % at y 90–95 %) — this box
+   stays inside that everywhere it's likely to carry actual glyph strokes. */
+const PRINT = { left: 68, top: 27, width: 9, height: 60 }
 /* viewBox matched to the print box's rendered aspect (both cutouts share a
-   normalized 697×1625 aspect so they occupy the same on-screen size). */
+   normalized 1016×1483 aspect so they occupy the same on-screen size). */
 const VB_W = 100
-const VB_H = 1272
+const VB_H = 973
 const UID = 'hs-print'
 
 /* ── Live print rendering ────────────────────────────────────────────── */
@@ -494,7 +495,7 @@ export default function Pricing() {
                   onPointerUp={releaseTilt}
                   onPointerCancel={releaseTilt}
                   onPointerLeave={releaseTilt}
-                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[697/1625] select-none touch-pan-y"
+                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[1016/1483] select-none touch-pan-y"
                   style={{ cursor: 'grab' }}
                 >
                   {/* Ambient halo */}
