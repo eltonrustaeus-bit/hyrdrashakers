@@ -9,10 +9,10 @@ import {
 /* ── Product ─────────────────────────────────────────────────────────── */
 
 const VARIANTS = [
-  { id: 'vit',   name: 'Vit',   photo: '/shaker-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true,
+  { id: 'vit', name: 'Vit', photo: '/shaker-star-white-cut.png', glow: 'rgba(191,219,254,0.22)', light: true,
     chip: 'linear-gradient(145deg,#ffffff 0%,#e6ebf2 100%)' },
-  { id: 'svart', name: 'Svart', photo: '/shaker-black-cut.png', glow: 'rgba(59,130,246,0.24)',  light: false,
-    chip: 'linear-gradient(145deg,#2b2f36 0%,#0b0d11 100%)' },
+  { id: 'gra', name: 'Grå', photo: '/shaker-star-gray-cut.png',  glow: 'rgba(148,163,184,0.24)',  light: false,
+    chip: 'linear-gradient(145deg,#9aa2ad 0%,#565d66 100%)' },
 ]
 
 const TEXT_COLORS = [
@@ -35,12 +35,16 @@ const MAX_UPLOAD_MB = 8
 /* Artwork is scaled to fit the print, so it has to start out big enough. */
 const MIN_ARTWORK_PX = 3000
 
-/* Print area as a share of the bottle image box, measured off the cutouts:
-   the body runs x 26–90 % and y 24–100 %, so this sits on the flat front face. */
-const PRINT = { left: 39, top: 31, width: 38, height: 56 }
-/* viewBox matched to the print box's rendered aspect (bottle PNG is 541×1003). */
+/* Both bottles now carry a printed STAR NUTRITION logo dead centre on the
+   front (x 24–73 %), so the customer's own print moves to the clear strip on
+   the body's right shoulder instead of overlapping it. Measured off the
+   cutouts: body runs x 9–91 % through the visible height, narrowing to
+   ~85 % right edge at the base, so this stays inside that taper throughout. */
+const PRINT = { left: 74, top: 27, width: 11, height: 60 }
+/* viewBox matched to the print box's rendered aspect (both cutouts share a
+   normalized 697×1625 aspect so they occupy the same on-screen size). */
 const VB_W = 100
-const VB_H = 273
+const VB_H = 1272
 const UID = 'hs-print'
 
 /* ── Live print rendering ────────────────────────────────────────────── */
@@ -48,12 +52,11 @@ const UID = 'hs-print'
 const PROBE = 100
 
 function BottlePrint({
-  text, font, color, vertical, artwork, light, fontEpoch, artScale, artRotation,
+  text, font, color, artwork, light, fontEpoch, artScale, artRotation,
 }: {
   text: string
   font: typeof PRINT_FONT
   color: string
-  vertical: boolean
   artwork: string | null
   light: boolean
   fontEpoch: number
@@ -90,18 +93,19 @@ function BottlePrint({
   const gap      = LEN * 0.1
   const textBand = both ? 2 * LEN - artSize - 2 * gap : 2 * LEN
 
-  // How far the glyph run may travel, and how tall it may be.
-  const runLimit  = vertical ? textBand * 0.95 : 2 * FACE * 0.92
-  const heightCap = vertical ? 2 * FACE * 0.85 : textBand * 0.85
+  // How far the glyph run may travel, and how tall it may be. The strip is
+  // narrow, so text always runs along the bottle's length — there's no room
+  // for a horizontal option here the way the old front-face print had.
+  const runLimit  = textBand * 0.95
+  const heightCap = 2 * FACE * 0.85
   const size = Math.max(6, Math.min(runLimit / perUnit, heightCap, 48))
 
   // Positive = toward the lid, along the bottle's length.
-  const stack    = both ? artSize + gap + textBand : 0
-  const artPos   = both ?  (stack / 2 - artSize / 2)  : 0
-  const textPos  = both ? -(stack / 2 - textBand / 2) : 0
-  // After the -90° rotation local +x points up the bottle; unrotated, up is -y.
-  const artXY    = vertical ? { x: artPos,  y: 0 } : { x: 0, y: -artPos }
-  const textXY   = vertical ? { x: textPos, y: 0 } : { x: 0, y: -textPos }
+  const stack   = both ? artSize + gap + textBand : 0
+  const artPos  = both ?  (stack / 2 - artSize / 2)  : 0
+  const textPos = both ? -(stack / 2 - textBand / 2) : 0
+  const artXY   = { x: artPos,  y: 0 }
+  const textXY  = { x: textPos, y: 0 }
 
   return (
     <svg
@@ -156,7 +160,7 @@ function BottlePrint({
 
       <g mask={`url(#${UID}-mx)`}>
         <g mask={`url(#${UID}-my)`}>
-          <g transform={`translate(${VB_W / 2} ${VB_H / 2}) rotate(${vertical ? -90 : 0})`}>
+          <g transform={`translate(${VB_W / 2} ${VB_H / 2}) rotate(-90)`}>
             {artwork && (
               // Scale/rotate around the artwork's own centre, independent of
               // the automatic placement math above — this is the user's own
@@ -207,7 +211,6 @@ export default function Pricing() {
   const [hasText, setHasText]         = useState(false)
   const [customText, setCustomText]   = useState('')
   const [textColorIdx, setTextColorIdx] = useState(1)
-  const [vertical, setVertical]       = useState(true)
   const [bothSides, setBothSides]     = useState(false)
   const [hasBall, setHasBall]         = useState(false)
   const [hasImage, setHasImage]       = useState(false)
@@ -371,18 +374,17 @@ export default function Pricing() {
   /* ── Copy helpers ── */
   const orderSummary = useMemo(() => {
     const rows = [
-      `Flaska: Perfect Shaker Activ 800 ml – ${variant.name}`,
+      `Flaska: Star Nutrition-shaker – ${variant.name}`,
       hasBall ? 'Shakerboll: Ja (+25 kr)' : null,
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
       hasText && labelText ? `Textfärg: ${color.name}` : null,
-      hasText && labelText ? `Placering: ${vertical ? 'Vertikal' : 'Horisontell'}` : null,
       bothSidesCharge ? 'Sidor: Text på både fram- och baksida (+15 kr)' : null,
       hasImage ? `Bild: Ja${artwork ? ` (${artwork.name})` : ''} – skickas med` : 'Bild: —',
       `Produkt: ${price} kr inkl. moms`,
       'Frakt: Betalas separat, pris bestäms vid beställning',
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
-  }, [variant, hasBall, hasText, labelText, color, vertical, bothSidesCharge, hasImage, artwork, price])
+  }, [variant, hasBall, hasText, labelText, color, bothSidesCharge, hasImage, artwork, price])
 
   const copy = useCallback((value: string, kind: 'email' | 'order') => {
     navigator.clipboard.writeText(value).then(
@@ -400,7 +402,6 @@ export default function Pricing() {
     setHasText(false)
     setCustomText('')
     setTextColorIdx(1)
-    setVertical(true)
     setBothSides(false)
     setHasImage(false)
     setArtwork(null)
@@ -410,7 +411,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    variantIdx !== 0 || hasBall || hasText || hasImage || customText !== '' || !vertical || bothSides
+    variantIdx !== 0 || hasBall || hasText || hasImage || customText !== '' || bothSides
 
   return (
     <section
@@ -447,7 +448,11 @@ export default function Pricing() {
           <p className="text-white/80 text-lg max-w-lg mx-auto">
             Välj flaska, lägg till text och din egen bild. Du ser resultatet direkt.
           </p>
-          <p className="text-white/45 text-xs max-w-md mx-auto mt-3">
+          <p className="text-blue-200/70 text-xs max-w-md mx-auto mt-3">
+            Ditt tryck placeras på sidan av flaskan, så du behåller Star Nutritions kvalitet
+            och märke tillsammans med din egen design.
+          </p>
+          <p className="text-white/45 text-xs max-w-md mx-auto mt-2">
             Inget rasistiskt, sexistiskt eller homofobiskt får designas. Sådana beställningar nekas.
           </p>
         </div>
@@ -511,7 +516,7 @@ export default function Pricing() {
                     <img
                       key={variant.id}
                       src={variant.photo}
-                      alt={`Perfect Shaker Activ 800 ml i färgen ${variant.name}`}
+                      alt={`Star Nutrition-shaker i färgen ${variant.name}`}
                       className="absolute inset-0 w-full h-full object-contain animate-fade-in-up"
                       draggable={false}
                       style={{ filter: 'drop-shadow(0 26px 34px rgba(0,0,0,0.65))' }}
@@ -531,7 +536,6 @@ export default function Pricing() {
                           text={labelText}
                           font={font}
                           color={color.value}
-                          vertical={vertical}
                           artwork={printArt}
                           light={variant.light}
                           fontEpoch={fontEpoch}
@@ -700,27 +704,6 @@ export default function Pricing() {
                     </div>
                   </div>
 
-                  {/* Placement */}
-                  <div className="flex items-center gap-3">
-                    <p className="text-white/70 text-xs uppercase tracking-widest">Placering</p>
-                    <div className="flex rounded-xl border border-white/10 overflow-hidden">
-                      {[
-                        { label: 'Vertikal', value: true },
-                        { label: 'Horisontell', value: false },
-                      ].map(opt => (
-                        <button
-                          key={opt.label}
-                          onClick={() => setVertical(opt.value)}
-                          aria-pressed={vertical === opt.value}
-                          className={`px-3.5 py-2 text-xs transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400 ${
-                            vertical === opt.value ? 'bg-blue-600 text-white font-semibold' : 'text-white/60 hover:text-white hover:bg-white/5'
-                          }`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* Both sides — same styling as the step toggles above:
                       circular checkbox, price badge, no separate switch
@@ -938,7 +921,7 @@ export default function Pricing() {
 
               <ul className="space-y-2 mb-5">
                 {[
-                  { label: `Perfect Shaker Activ 800 ml – ${variant.name}`, show: true },
+                  { label: `Star Nutrition-shaker – ${variant.name}`, show: true },
                   { label: 'BPA-fri & läcksäker design', show: true },
                   { label: 'Shakerboll i rostfritt stål', show: hasBall },
                   { label: labelText ? `Text: “${labelText}” · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
