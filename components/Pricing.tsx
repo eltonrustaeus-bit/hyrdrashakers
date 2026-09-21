@@ -494,7 +494,7 @@ export default function Pricing() {
                   onPointerUp={releaseTilt}
                   onPointerCancel={releaseTilt}
                   onPointerLeave={releaseTilt}
-                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[541/1003] select-none touch-pan-y"
+                  className="relative h-[270px] sm:h-[340px] lg:h-[500px] aspect-[697/1625] select-none touch-pan-y"
                   style={{ cursor: 'grab' }}
                 >
                   {/* Ambient halo */}
