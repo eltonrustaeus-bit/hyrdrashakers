@@ -20,6 +20,7 @@ const TEXT_COLORS = [
   { id: 'svart', name: 'Svart', swatch: '#111111', value: '#0d0d0d' },
   { id: 'bla',   name: 'Blå',   swatch: '#3b82f6', value: '#2f6fe4' },
   { id: 'rod',   name: 'Röd',   swatch: '#ef4444', value: '#e02424' },
+  { id: 'rosa',  name: 'Rosa',  swatch: '#ec4899', value: '#db2777' },
 ]
 
 /* One typeface, so every order prints the same way. `factor` is only the
@@ -36,19 +37,22 @@ const MAX_UPLOAD_MB = 8
 const MIN_ARTWORK_PX = 3000
 
 /* Product photos, used exactly as Lucas sent them — uncropped, at their
-   native 1024×1536 canvas, no cutout of our own. Both bottles carry a
-   printed STAR NUTRITION logo centred on the front (white logo x 37–65 %,
-   gray x 34–67 %), so the customer's own print sits in the clear strip on
-   the body's right shoulder instead. Measured off these photos: body right
-   edge runs 74–81 % depending on height and variant, tightest at the base
-   (white, ~74 % around y 80–90 %) — this box stays inside that everywhere
-   it's likely to carry actual glyph strokes. */
-const PRINT = { left: 68, top: 27, width: 7, height: 58 }
-/* viewBox matched to the print box's rendered aspect (both source photos
-   share the same 1024×1536 canvas already, so no per-variant padding is
-   needed to make them occupy the same on-screen size). */
+   native 1024×1536 canvas, no cutout of our own. The gray bottle's own
+   photo was shot slightly larger in frame than the white one's, so its
+   canvas is rescaled/recentred (see scratchpad/resize-gray.py) to match
+   the white photo's silhouette before either ships here — both now read
+   as the same size on screen.
+
+   The customer's print sits on the FRONT, centred below the printed STAR
+   NUTRITION logo (logo spans roughly x 35–67 %, y 35–55 % on both bottles).
+   Measured off these photos, the body stays comfortably wide (at least
+   48 % of canvas width) everywhere from y 55 % down to y 90 %, before the
+   base's foreshortened rim narrows it sharply — this box stays well inside
+   that on both variants. */
+const PRINT = { left: 32, top: 60, width: 36, height: 26 }
+/* viewBox matched to the print box's rendered aspect. */
 const VB_W = 100
-const VB_H = 1243
+const VB_H = 108
 const UID = 'hs-print'
 
 /* ── Live print rendering ────────────────────────────────────────────── */
@@ -67,11 +71,12 @@ function BottlePrint({
   artScale: number
   artRotation: number
 }) {
-  /* The printable face is FACE wide and LEN tall on screen in both modes.
-     Artwork always stacks above the text along the bottle's length; only the
-     direction the text *runs* changes with the placement toggle. */
-  const FACE = VB_W / 2
-  const LEN  = VB_H / 2
+  /* The printable box is BW wide and BH tall on screen. It sits flat on the
+     bottle's front, so text runs normally (left to right) — no rotation
+     trick needed the way the old narrow side-strip print required.
+     Artwork, when present, stacks above the text. */
+  const BW = VB_W / 2
+  const BH = VB_H / 2
   const both = Boolean(text && artwork)
 
   /* Measure the actual glyph run at a fixed probe size so the fitted size is
@@ -90,26 +95,25 @@ function BottlePrint({
 
   const perUnit = unitWidth ?? Math.max(display.length, 1) * (font.factor + font.spacing)
 
-  // Split the bottle's length between the artwork and the text band.
+  // Split the box's height between the artwork and the text band.
   const artSize  = both
-    ? Math.min(2 * FACE * 0.92, LEN * 0.95)
-    : Math.min(2 * FACE * 0.85, 2 * LEN * 0.85)
-  const gap      = LEN * 0.1
-  const textBand = both ? 2 * LEN - artSize - 2 * gap : 2 * LEN
+    ? Math.min(2 * BW * 0.92, BH * 0.95)
+    : Math.min(2 * BW * 0.85, 2 * BH * 0.85)
+  const gap      = BH * 0.12
+  const textBand = both ? 2 * BH - artSize - 2 * gap : 2 * BH
 
-  // How far the glyph run may travel, and how tall it may be. The strip is
-  // narrow, so text always runs along the bottle's length — there's no room
-  // for a horizontal option here the way the old front-face print had.
-  const runLimit  = textBand * 0.95
-  const heightCap = 2 * FACE * 0.85
-  const size = Math.max(6, Math.min(runLimit / perUnit, heightCap, 48))
+  // How far the glyph run may travel (the box's width), and how tall it
+  // may be (its share of the box's height).
+  const runLimit  = 2 * BW * 0.92
+  const heightCap = textBand * 0.8
+  const size = Math.max(6, Math.min(runLimit / perUnit, heightCap, 42))
 
-  // Positive = toward the lid, along the bottle's length.
+  // Negative = up, toward the logo; positive = down, toward the base.
   const stack   = both ? artSize + gap + textBand : 0
-  const artPos  = both ?  (stack / 2 - artSize / 2)  : 0
-  const textPos = both ? -(stack / 2 - textBand / 2) : 0
-  const artXY   = { x: artPos,  y: 0 }
-  const textXY  = { x: textPos, y: 0 }
+  const artPos  = both ? -(stack / 2 - artSize / 2)  : 0
+  const textPos = both ?  (stack / 2 - textBand / 2) : 0
+  const artXY   = { x: 0, y: artPos }
+  const textXY  = { x: 0, y: textPos }
 
   return (
     <svg
@@ -119,29 +123,6 @@ function BottlePrint({
       aria-hidden="true"
     >
       <defs>
-        {/* The print wraps around the barrel, so its edges fall away from view.
-            Fading the ink itself sells the curve without painting a panel onto
-            the bottle. */}
-        <linearGradient id={`${UID}-fx`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0"    stopColor="#000" />
-          <stop offset="0.10" stopColor="#8a8a8a" />
-          <stop offset="0.26" stopColor="#fff" />
-          <stop offset="0.74" stopColor="#fff" />
-          <stop offset="0.90" stopColor="#8a8a8a" />
-          <stop offset="1"    stopColor="#000" />
-        </linearGradient>
-        <linearGradient id={`${UID}-fy`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0"    stopColor="#000" />
-          <stop offset="0.06" stopColor="#fff" />
-          <stop offset="0.94" stopColor="#fff" />
-          <stop offset="1"    stopColor="#000" />
-        </linearGradient>
-        <mask id={`${UID}-mx`}>
-          <rect width={VB_W} height={VB_H} fill={`url(#${UID}-fx)`} />
-        </mask>
-        <mask id={`${UID}-my`}>
-          <rect width={VB_W} height={VB_H} fill={`url(#${UID}-fy)`} />
-        </mask>
         <filter id={`${UID}-ink`} x="-30%" y="-30%" width="160%" height="160%">
           <feDropShadow dx="0" dy="0.7" stdDeviation="0.6" floodOpacity="0.4" />
         </filter>
@@ -162,47 +143,43 @@ function BottlePrint({
         {display}
       </text>
 
-      <g mask={`url(#${UID}-mx)`}>
-        <g mask={`url(#${UID}-my)`}>
-          <g transform={`translate(${VB_W / 2} ${VB_H / 2}) rotate(-90)`}>
-            {artwork && (
-              // Scale/rotate around the artwork's own centre, independent of
-              // the automatic placement math above — this is the user's own
-              // adjustment, layered on top of where the layout put it.
-              <g transform={`translate(${artXY.x} ${artXY.y}) rotate(${artRotation}) scale(${artScale})`}>
-                <image
-                  href={artwork}
-                  x={-artSize / 2}
-                  y={-artSize / 2}
-                  width={artSize}
-                  height={artSize}
-                  preserveAspectRatio="xMidYMid meet"
-                  filter={`url(#${UID}-ink)`}
-                />
-              </g>
-            )}
-            {display && (
-              <text
-                x={textXY.x}
-                y={textXY.y}
-                dy="0.35em"
-                textAnchor="middle"
-                fill={color}
-                fontFamily={font.css}
-                fontWeight={font.weight}
-                fontSize={size}
-                letterSpacing={size * font.spacing}
-                stroke={light ? 'rgba(0,0,0,0.22)' : 'rgba(0,0,0,0.45)'}
-                strokeWidth={size * 0.04}
-                paintOrder="stroke"
-                filter={`url(#${UID}-ink)`}
-                style={{ whiteSpace: 'pre' }}
-              >
-                {display}
-              </text>
-            )}
+      <g transform={`translate(${VB_W / 2} ${VB_H / 2})`}>
+        {artwork && (
+          // Scale/rotate around the artwork's own centre, independent of
+          // the automatic placement math above — this is the user's own
+          // adjustment, layered on top of where the layout put it.
+          <g transform={`translate(${artXY.x} ${artXY.y}) rotate(${artRotation}) scale(${artScale})`}>
+            <image
+              href={artwork}
+              x={-artSize / 2}
+              y={-artSize / 2}
+              width={artSize}
+              height={artSize}
+              preserveAspectRatio="xMidYMid meet"
+              filter={`url(#${UID}-ink)`}
+            />
           </g>
-        </g>
+        )}
+        {display && (
+          <text
+            x={textXY.x}
+            y={textXY.y}
+            dy="0.35em"
+            textAnchor="middle"
+            fill={color}
+            fontFamily={font.css}
+            fontWeight={font.weight}
+            fontSize={size}
+            letterSpacing={size * font.spacing}
+            stroke={light ? 'rgba(0,0,0,0.22)' : 'rgba(0,0,0,0.45)'}
+            strokeWidth={size * 0.04}
+            paintOrder="stroke"
+            filter={`url(#${UID}-ink)`}
+            style={{ whiteSpace: 'pre' }}
+          >
+            {display}
+          </text>
+        )}
       </g>
     </svg>
   )
@@ -216,7 +193,6 @@ export default function Pricing() {
   const [customText, setCustomText]   = useState('')
   const [textColorIdx, setTextColorIdx] = useState(1)
   const [bothSides, setBothSides]     = useState(false)
-  const [hasBall, setHasBall]         = useState(false)
   const [hasImage, setHasImage]       = useState(false)
   const [artwork, setArtwork]         = useState<{ url: string; name: string; w: number; h: number } | null>(null)
   const [artScale, setArtScale]       = useState(1)
@@ -236,7 +212,7 @@ export default function Pricing() {
   const labelText = hasText ? customText.trim() : ''
   const printArt  = hasImage && artwork ? artwork.url : null
   const bothSidesCharge = hasText && bothSides
-  const price     = (hasText && hasImage ? 150 : hasImage ? 130 : 120) + (bothSidesCharge ? 15 : 0) + (hasBall ? 25 : 0)
+  const price     = (hasText && hasImage ? 150 : hasImage ? 130 : 120) + (bothSidesCharge ? 15 : 0)
 
   /* Vector art has no fixed pixel size, so only raster uploads get flagged. */
   const artworkTooSmall = Boolean(
@@ -379,7 +355,6 @@ export default function Pricing() {
   const orderSummary = useMemo(() => {
     const rows = [
       `Flaska: Star Nutrition-shaker – ${variant.name}`,
-      hasBall ? 'Shakerboll: Ja (+25 kr)' : null,
       hasText && labelText ? `Text: "${labelText}"` : 'Text: —',
       hasText && labelText ? `Textfärg: ${color.name}` : null,
       bothSidesCharge ? 'Sidor: Text på både fram- och baksida (+15 kr)' : null,
@@ -388,7 +363,7 @@ export default function Pricing() {
       'Frakt: Betalas separat, pris bestäms vid beställning',
     ].filter(Boolean)
     return `HYDRA SHAKERS – BESTÄLLNING\n\n${rows.join('\n')}`
-  }, [variant, hasBall, hasText, labelText, color, bothSidesCharge, hasImage, artwork, price])
+  }, [variant, hasText, labelText, color, bothSidesCharge, hasImage, artwork, price])
 
   const copy = useCallback((value: string, kind: 'email' | 'order') => {
     navigator.clipboard.writeText(value).then(
@@ -402,7 +377,6 @@ export default function Pricing() {
 
   const reset = useCallback(() => {
     setVariantIdx(0)
-    setHasBall(false)
     setHasText(false)
     setCustomText('')
     setTextColorIdx(1)
@@ -415,7 +389,7 @@ export default function Pricing() {
   }, [])
 
   const hasChanges =
-    variantIdx !== 0 || hasBall || hasText || hasImage || customText !== '' || bothSides
+    variantIdx !== 0 || hasText || hasImage || customText !== '' || bothSides
 
   return (
     <section
@@ -453,8 +427,7 @@ export default function Pricing() {
             Välj flaska, lägg till text och din egen bild. Du ser resultatet direkt.
           </p>
           <p className="text-blue-200/70 text-xs max-w-md mx-auto mt-3">
-            Ditt tryck placeras på sidan av flaskan, så du behåller Star Nutritions kvalitet
-            och märke tillsammans med din egen design.
+            Ditt tryck placeras på flaskans framsida, strax under Star Nutritions logga.
           </p>
           <p className="text-white/45 text-xs max-w-md mx-auto mt-2">
             Inget rasistiskt, sexistiskt eller homofobiskt får designas. Sådana beställningar nekas.
@@ -664,7 +637,7 @@ export default function Pricing() {
                       just discouraged: it can't be selected at all. */}
                   <div>
                     <p className="text-white/70 text-xs uppercase tracking-widest mb-2">Textfärg</p>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-5 gap-2">
                       {TEXT_COLORS.map((c, i) => {
                         const allowed = isColorAllowed(c)
                         return (
@@ -887,39 +860,10 @@ export default function Pricing() {
               )}
             </div>
 
-            {/* Step 4 — shaker ball. A yes/no add-on with nothing further to
-                configure, so no expanding panel — same header row as the
-                other steps, just with a real product photo standing in for
-                the usual icon badge. */}
-            <div className={`bg-[#0d1220] border rounded-2xl overflow-hidden transition-colors duration-200 ${hasBall ? 'border-blue-500/60' : 'border-white/10 hover:border-white/20'}`}>
-              <button
-                className="w-full flex items-center justify-between px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
-                onClick={() => setHasBall(v => !v)}
-                aria-pressed={hasBall}
-              >
-                <div className="flex items-center gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
-                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 bg-white/90">
-                    <img src="/shaker-ball.jpg" alt="Shakerboll i rostfritt stål" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <p className="text-white font-semibold">Shakerboll</p>
-                    <p className="text-white/70 text-xs mt-0.5">Rostfritt stål, blandar pulvret jämnt</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-blue-200 text-sm">+25 kr</span>
-                  <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${hasBall ? 'bg-blue-600 border-blue-600' : 'border-white/25'}`}>
-                    {hasBall && <Check size={13} className="text-white" strokeWidth={2.5} />}
-                  </span>
-                </div>
-              </button>
-            </div>
-
-            {/* Step 5 — summary */}
+            {/* Step 4 — summary */}
             <div ref={summaryRef} className="bg-[#0d1220] border border-white/10 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
                 <p className="text-white font-semibold">Din beställning</p>
               </div>
 
@@ -927,7 +871,6 @@ export default function Pricing() {
                 {[
                   { label: `Star Nutrition-shaker – ${variant.name}`, show: true },
                   { label: 'BPA-fri & läcksäker design', show: true },
-                  { label: 'Shakerboll i rostfritt stål', show: hasBall },
                   { label: labelText ? `Text: “${labelText}” · ${color.name}` : 'Text (skriv in ovan)', show: hasText },
                   { label: 'Text på båda sidor', show: bothSidesCharge },
                   { label: artwork ? `Bild: ${artwork.name}` : 'Bild/logga', show: hasImage },
@@ -954,9 +897,6 @@ export default function Pricing() {
                 </p>
                 {bothSidesCharge && (
                   <p className="text-white/60 text-xs mt-0.5">+ text på båda sidor 15 kr.</p>
-                )}
-                {hasBall && (
-                  <p className="text-white/60 text-xs mt-0.5">+ shakerboll 25 kr.</p>
                 )}
                 <p className="text-white/45 text-xs mt-1.5">
                   Frakt tillkommer och betalas separat av dig. Fraktpriset bestäms när du lägger din beställning.
@@ -1042,7 +982,7 @@ export default function Pricing() {
               {price} <span className="text-blue-300 text-sm font-semibold">kr</span>
             </p>
             <p className="text-white/50 text-[10px] mt-0.5">
-              {[hasText && 'text', hasImage && 'bild', hasBall && 'shakerboll'].filter(Boolean).join(' · ') || 'utan tryck'}
+              {[hasText && 'text', hasImage && 'bild'].filter(Boolean).join(' · ') || 'utan tryck'}
             </p>
           </div>
           <a
